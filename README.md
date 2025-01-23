@@ -1,6 +1,3 @@
-### Updated `README.md`
-
-```markdown
 # Rust Image Processing Application
 
 This is a command-line image processing application written in Rust. It supports various operations such as blurring, brightening, cropping, rotating, inverting, grayscale conversion, generating solid color images, and creating fractal images.
