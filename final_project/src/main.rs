@@ -1,6 +1,6 @@
 #![allow(dead_code, unused_variables)]
 
-use image::{DynamicImage, GenericImageView, ImageBuffer, Rgb};
+use image::{ImageBuffer, Rgb};
 use std::env;
 
 fn main() {
