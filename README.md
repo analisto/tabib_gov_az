@@ -40,9 +40,6 @@ This certificate above verifies that **Ismat Samadov** successfully completed th
 ## License
 
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
-```
-
----
 
 ### Key Changes
 1. **Added Certificate Section**:
@@ -54,7 +51,3 @@ This project is licensed under the MIT License. See the [LICENSE](LICENSE) file 
 
 ### How It Looks
 When you view the `README.md` on GitHub or any Markdown viewer, it will display the certificate image along with the verification text.
-
----
-
-Let me know if you need further assistance! 😊
