@@ -41,13 +41,5 @@ This certificate above verifies that **Ismat Samadov** successfully completed th
 
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
 
-### Key Changes
-1. **Added Certificate Section**:
-   - Added a section to display the certificate image and the verification text.
-2. **Image Embedding**:
-   - Used the `![Udemy Certificate](URL)` syntax to embed the image in the `README.md`.
-
----
-
 ### How It Looks
 When you view the `README.md` on GitHub or any Markdown viewer, it will display the certificate image along with the verification text.
