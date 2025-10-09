@@ -3,12 +3,13 @@ import { prisma } from '@/lib/prisma'
 
 export async function GET(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params
     const template = await prisma.template.findUnique({
       where: {
-        id: params.id,
+        id,
       },
       include: {
         user: {
@@ -35,7 +36,7 @@ export async function GET(
     // Increment views
     await prisma.template.update({
       where: {
-        id: params.id,
+        id,
       },
       data: {
         views: {
