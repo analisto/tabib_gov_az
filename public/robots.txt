@@ -1,0 +1,10 @@
+# Allow all crawlers
+User-agent: *
+Allow: /
+
+# Disallow authentication pages
+Disallow: /api/auth/
+Disallow: /dashboard/
+
+# Sitemap
+Sitemap: https://codeplace.vercel.app/sitemap.xml
