@@ -1,49 +1,87 @@
 'use client'
 
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
-import { useState } from 'react'
+import Image from 'next/image'
 
-export default function Home() {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+interface Template {
+  id: string
+  title: string
+  description: string
+  category: string
+  tags: string[]
+  previewImage: string
+  techStack: string[]
+  views: number
+  downloads: number
+  featured: boolean
+  user: {
+    id: string
+    name: string | null
+    image: string | null
+  }
+  createdAt: string
+}
 
-  const features = [
-    {
-      icon: (
-        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-        </svg>
-      ),
-      title: 'Upload & Showcase',
-      description: 'Share your code templates with the community. Include screenshots, descriptions, and tech stack details.',
-      gradient: 'from-violet-500 to-purple-500'
-    },
-    {
-      icon: (
-        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-        </svg>
-      ),
-      title: 'Discover & Explore',
-      description: 'Browse through a curated collection of code templates for various frameworks and use cases.',
-      gradient: 'from-blue-500 to-cyan-500'
-    },
-    {
-      icon: (
-        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-        </svg>
-      ),
-      title: 'Build Faster',
-      description: 'Accelerate your development with ready-to-use templates. Save time and focus on what truly matters.',
-      gradient: 'from-pink-500 to-rose-500'
+const categories = [
+  'All',
+  'Landing Page',
+  'Dashboard',
+  'E-commerce',
+  'Blog',
+  'Portfolio',
+  'Admin Panel',
+  'Authentication',
+  'Components',
+  'Other'
+]
+
+export default function TemplatesPage() {
+  const [templates, setTemplates] = useState<Template[]>([])
+  const [loading, setLoading] = useState(true)
+  const [searchQuery, setSearchQuery] = useState('')
+  const [selectedCategory, setSelectedCategory] = useState('All')
+  const [sortBy, setSortBy] = useState('recent')
+
+  useEffect(() => {
+    fetchTemplates()
+  }, [])
+
+  const fetchTemplates = async () => {
+    try {
+      const res = await fetch('/api/templates')
+      if (res.ok) {
+        const data = await res.json()
+        setTemplates(data)
+      }
+    } catch (error) {
+      console.error('Failed to fetch templates:', error)
+    } finally {
+      setLoading(false)
     }
-  ]
+  }
 
-  const stats = [
-    { label: 'Templates', value: '500+' },
-    { label: 'Developers', value: '10K+' },
-    { label: 'Downloads', value: '50K+' }
-  ]
+  const filteredTemplates = templates
+    .filter(template => {
+      const matchesSearch = template.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        template.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        template.tags.some(tag => tag.toLowerCase().includes(searchQuery.toLowerCase())) ||
+        template.techStack.some(tech => tech.toLowerCase().includes(searchQuery.toLowerCase()))
+
+      const matchesCategory = selectedCategory === 'All' || template.category === selectedCategory
+
+      return matchesSearch && matchesCategory
+    })
+    .sort((a, b) => {
+      if (sortBy === 'recent') {
+        return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+      } else if (sortBy === 'popular') {
+        return b.views - a.views
+      } else if (sortBy === 'downloads') {
+        return b.downloads - a.downloads
+      }
+      return 0
+    })
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100">
@@ -51,208 +89,228 @@ export default function Home() {
       <nav className="glass-effect border-b border-white/20 sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between h-16 items-center">
-            <div className="flex-shrink-0 animate-fade-in">
-              <Link href="/" className="flex items-center space-x-2">
-                <div className="w-8 h-8 bg-gradient-to-br from-violet-600 to-indigo-600 rounded-lg flex items-center justify-center">
-                  <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
-                  </svg>
-                </div>
-                <h1 className="text-2xl font-bold gradient-text">TemplateHub</h1>
-              </Link>
-            </div>
-
-            {/* Desktop Navigation */}
-            <div className="hidden md:flex items-center gap-6">
-              <Link href="/templates" className="text-sm font-medium text-gray-700 hover:text-indigo-600 transition-colors">
-                Templates
-              </Link>
-              <Link href="/about" className="text-sm font-medium text-gray-700 hover:text-indigo-600 transition-colors">
-                About
-              </Link>
-              <div className="flex gap-3">
-                <Link
-                  href="/login"
-                  className="px-4 py-2 text-sm font-medium text-gray-700 hover:text-indigo-600 transition-colors"
-                >
-                  Sign in
-                </Link>
-                <Link
-                  href="/register"
-                  className="px-5 py-2 text-sm font-medium text-white bg-gradient-to-r from-violet-600 to-indigo-600 rounded-lg hover:from-violet-700 hover:to-indigo-700 transition-all shadow-md hover:shadow-lg"
-                >
-                  Get started
-                </Link>
-              </div>
-            </div>
-
-            {/* Mobile menu button */}
-            <div className="md:hidden">
-              <button
-                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                className="p-2 rounded-md text-gray-700 hover:bg-white/50"
-              >
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  {mobileMenuOpen ? (
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                  ) : (
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-                  )}
+            <Link href="/" className="flex items-center space-x-2">
+              <div className="w-8 h-8 bg-gradient-to-br from-violet-600 to-indigo-600 rounded-lg flex items-center justify-center">
+                <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
                 </svg>
-              </button>
+              </div>
+              <h1 className="text-2xl font-bold gradient-text">TemplateHub</h1>
+            </Link>
+            <div className="flex gap-3">
+              <Link
+                href="/login"
+                className="px-4 py-2 text-sm font-medium text-gray-700 hover:text-indigo-600 transition-colors hidden sm:block"
+              >
+                Sign in
+              </Link>
+              <Link
+                href="/register"
+                className="px-5 py-2 text-sm font-medium text-white bg-gradient-to-r from-violet-600 to-indigo-600 rounded-lg hover:from-violet-700 hover:to-indigo-700 transition-all shadow-md hover:shadow-lg"
+              >
+                Get started
+              </Link>
             </div>
           </div>
-
-          {/* Mobile menu */}
-          {mobileMenuOpen && (
-            <div className="md:hidden pb-4 animate-fade-in-up">
-              <div className="flex flex-col space-y-3">
-                <Link href="/templates" className="px-3 py-2 text-sm font-medium text-gray-700 hover:bg-white/50 rounded-md">
-                  Templates
-                </Link>
-                <Link href="/about" className="px-3 py-2 text-sm font-medium text-gray-700 hover:bg-white/50 rounded-md">
-                  About
-                </Link>
-                <Link href="/login" className="px-3 py-2 text-sm font-medium text-gray-700 hover:bg-white/50 rounded-md">
-                  Sign in
-                </Link>
-                <Link
-                  href="/register"
-                  className="px-3 py-2 text-sm font-medium text-white bg-gradient-to-r from-violet-600 to-indigo-600 rounded-md text-center"
-                >
-                  Get started
-                </Link>
-              </div>
-            </div>
-          )}
         </div>
       </nav>
 
-      {/* Hero Section */}
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="pt-20 pb-16 text-center lg:pt-32">
-          <div className="animate-fade-in-up">
-            <div className="inline-flex items-center px-4 py-2 bg-white/60 rounded-full mb-8 shadow-sm">
-              <span className="text-sm font-medium text-indigo-600">✨ New templates added weekly</span>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        {/* Header */}
+        <div className="text-center mb-12 animate-fade-in-up">
+          <h1 className="text-4xl sm:text-5xl font-bold text-gray-900 mb-4">
+            Browse <span className="gradient-text">Templates</span>
+          </h1>
+          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+            Discover amazing code templates from our community of developers
+          </p>
+        </div>
+
+        {/* Search and Filters */}
+        <div className="mb-8 space-y-4 animate-fade-in">
+          {/* Search Bar */}
+          <div className="relative max-w-2xl mx-auto">
+            <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+              <svg className="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+              </svg>
             </div>
-            <h1 className="text-4xl sm:text-6xl lg:text-7xl font-extrabold text-gray-900 tracking-tight">
-              Discover Amazing
-              <span className="block gradient-text mt-2">Code Templates</span>
-            </h1>
-            <p className="mt-6 text-lg sm:text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
-              Browse, share, and showcase your code templates. Build faster with
-              pre-made solutions from the community. Join thousands of developers today.
-            </p>
-            <div className="mt-10 flex flex-col sm:flex-row gap-4 justify-center items-center">
-              <Link
-                href="/register"
-                className="w-full sm:w-auto px-8 py-4 text-base font-semibold text-white bg-gradient-to-r from-violet-600 to-indigo-600 rounded-xl hover:from-violet-700 hover:to-indigo-700 transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
-              >
-                Start uploading free
-              </Link>
-              <Link
-                href="/templates"
-                className="w-full sm:w-auto px-8 py-4 text-base font-semibold text-indigo-600 bg-white rounded-xl hover:bg-gray-50 border-2 border-indigo-600 transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
-              >
-                Browse templates
-              </Link>
-            </div>
+            <input
+              type="text"
+              placeholder="Search templates..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="block w-full pl-12 pr-4 py-4 border border-gray-300 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent bg-white text-gray-900 placeholder-gray-400"
+            />
           </div>
 
-          {/* Stats */}
-          <div className="mt-20 grid grid-cols-3 gap-8 sm:gap-16 animate-fade-in">
-            {stats.map((stat, index) => (
-              <div key={index} className="text-center">
-                <div className="text-3xl sm:text-4xl font-bold gradient-text">{stat.value}</div>
-                <div className="mt-2 text-sm sm:text-base text-gray-600">{stat.label}</div>
-              </div>
-            ))}
+          {/* Category Filter and Sort */}
+          <div className="flex flex-col sm:flex-row gap-4 items-center justify-between">
+            {/* Categories */}
+            <div className="flex flex-wrap gap-2 justify-center">
+              {categories.map((category) => (
+                <button
+                  key={category}
+                  onClick={() => setSelectedCategory(category)}
+                  className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
+                    selectedCategory === category
+                      ? 'bg-gradient-to-r from-violet-600 to-indigo-600 text-white shadow-md'
+                      : 'bg-white text-gray-700 hover:bg-gray-50 border border-gray-200'
+                  }`}
+                >
+                  {category}
+                </button>
+              ))}
+            </div>
+
+            {/* Sort */}
+            <div className="flex items-center gap-2">
+              <span className="text-sm text-gray-600">Sort by:</span>
+              <select
+                value={sortBy}
+                onChange={(e) => setSortBy(e.target.value)}
+                className="px-4 py-2 border border-gray-300 rounded-lg bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm"
+              >
+                <option value="recent">Most Recent</option>
+                <option value="popular">Most Popular</option>
+                <option value="downloads">Most Downloaded</option>
+              </select>
+            </div>
           </div>
         </div>
 
-        {/* Features Grid */}
-        <div className="py-20">
-          <div className="text-center mb-16 animate-fade-in-up">
-            <h2 className="text-3xl sm:text-4xl font-bold text-gray-900">Why Choose TemplateHub?</h2>
-            <p className="mt-4 text-lg text-gray-600">Everything you need to share and discover amazing code templates</p>
-          </div>
+        {/* Results Count */}
+        <div className="mb-6">
+          <p className="text-gray-600">
+            Showing <span className="font-semibold">{filteredTemplates.length}</span> template{filteredTemplates.length !== 1 ? 's' : ''}
+          </p>
+        </div>
 
-          <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
-            {features.map((feature, index) => (
-              <div
-                key={index}
-                className="card-hover bg-white p-8 rounded-2xl shadow-lg border border-gray-100 animate-fade-in-up"
-                style={{ animationDelay: `${index * 0.1}s` }}
+        {/* Templates Grid */}
+        {loading ? (
+          <div className="flex justify-center items-center py-20">
+            <div className="animate-spin rounded-full h-12 w-12 border-4 border-indigo-600 border-t-transparent"></div>
+          </div>
+        ) : filteredTemplates.length === 0 ? (
+          <div className="text-center py-20 animate-fade-in">
+            <svg className="mx-auto h-24 w-24 text-gray-400 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            <h3 className="text-xl font-semibold text-gray-900 mb-2">No templates found</h3>
+            <p className="text-gray-600 mb-8">Try adjusting your search or filters</p>
+            <Link
+              href="/register"
+              className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-violet-600 to-indigo-600 text-white rounded-lg hover:from-violet-700 hover:to-indigo-700 transition-all shadow-lg"
+            >
+              Be the first to upload!
+            </Link>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 pb-12">
+            {filteredTemplates.map((template, index) => (
+              <Link
+                key={template.id}
+                href={`/templates/${template.id}`}
+                className="group card-hover bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden animate-fade-in-up"
+                style={{ animationDelay: `${index * 0.05}s` }}
               >
-                <div className={`w-14 h-14 bg-gradient-to-br ${feature.gradient} rounded-xl flex items-center justify-center mb-6 text-white shadow-md`}>
-                  {feature.icon}
+                {/* Image */}
+                <div className="relative h-48 bg-gradient-to-br from-violet-100 to-indigo-100 overflow-hidden">
+                  {template.previewImage ? (
+                    <Image
+                      src={template.previewImage}
+                      alt={template.title}
+                      fill
+                      className="object-cover group-hover:scale-105 transition-transform duration-300"
+                    />
+                  ) : (
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <svg className="w-20 h-20 text-indigo-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
+                      </svg>
+                    </div>
+                  )}
+                  {template.featured && (
+                    <div className="absolute top-3 right-3 bg-gradient-to-r from-amber-400 to-orange-500 text-white text-xs font-bold px-3 py-1 rounded-full shadow-lg">
+                      ⭐ Featured
+                    </div>
+                  )}
                 </div>
-                <h3 className="text-xl font-bold text-gray-900 mb-3">{feature.title}</h3>
-                <p className="text-gray-600 leading-relaxed">{feature.description}</p>
-              </div>
+
+                {/* Content */}
+                <div className="p-6">
+                  <div className="flex items-start justify-between mb-3">
+                    <h3 className="text-xl font-bold text-gray-900 group-hover:text-indigo-600 transition-colors line-clamp-1">
+                      {template.title}
+                    </h3>
+                  </div>
+
+                  <p className="text-gray-600 text-sm mb-4 line-clamp-2 leading-relaxed">
+                    {template.description}
+                  </p>
+
+                  {/* Tags */}
+                  <div className="flex flex-wrap gap-2 mb-4">
+                    {template.techStack.slice(0, 3).map((tech, i) => (
+                      <span
+                        key={i}
+                        className="px-3 py-1 bg-indigo-50 text-indigo-600 text-xs font-medium rounded-full"
+                      >
+                        {tech}
+                      </span>
+                    ))}
+                    {template.techStack.length > 3 && (
+                      <span className="px-3 py-1 bg-gray-100 text-gray-600 text-xs font-medium rounded-full">
+                        +{template.techStack.length - 3}
+                      </span>
+                    )}
+                  </div>
+
+                  {/* Footer */}
+                  <div className="flex items-center justify-between pt-4 border-t border-gray-100">
+                    <div className="flex items-center gap-2">
+                      {template.user.image ? (
+                        <Image
+                          src={template.user.image}
+                          alt={template.user.name || 'User'}
+                          width={24}
+                          height={24}
+                          className="rounded-full"
+                        />
+                      ) : (
+                        <div className="w-6 h-6 bg-gradient-to-br from-violet-400 to-indigo-400 rounded-full flex items-center justify-center text-white text-xs font-semibold">
+                          {template.user.name?.charAt(0).toUpperCase() || 'U'}
+                        </div>
+                      )}
+                      <span className="text-sm text-gray-600">{template.user.name || 'Anonymous'}</span>
+                    </div>
+                    <div className="flex items-center gap-3 text-gray-500 text-xs">
+                      <div className="flex items-center gap-1">
+                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                        </svg>
+                        {template.views}
+                      </div>
+                      <div className="flex items-center gap-1">
+                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                        </svg>
+                        {template.downloads}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </Link>
             ))}
           </div>
-        </div>
-
-        {/* CTA Section */}
-        <div className="py-20 animate-fade-in">
-          <div className="bg-gradient-to-r from-violet-600 to-indigo-600 rounded-3xl shadow-2xl overflow-hidden">
-            <div className="px-8 py-16 sm:px-16 text-center">
-              <h2 className="text-3xl sm:text-4xl font-bold text-white mb-4">
-                Ready to Share Your Templates?
-              </h2>
-              <p className="text-lg text-indigo-100 mb-8 max-w-2xl mx-auto">
-                Join our growing community of developers and start showcasing your work today.
-              </p>
-              <Link
-                href="/register"
-                className="inline-flex items-center px-8 py-4 text-base font-semibold text-indigo-600 bg-white rounded-xl hover:bg-gray-50 transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
-              >
-                Create free account
-                <svg className="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
-                </svg>
-              </Link>
-            </div>
-          </div>
-        </div>
-      </main>
+        )}
+      </div>
 
       {/* Footer */}
       <footer className="bg-white/60 backdrop-blur-lg border-t border-gray-200 mt-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-            <div className="col-span-1 md:col-span-2">
-              <div className="flex items-center space-x-2 mb-4">
-                <div className="w-8 h-8 bg-gradient-to-br from-violet-600 to-indigo-600 rounded-lg flex items-center justify-center">
-                  <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
-                  </svg>
-                </div>
-                <span className="text-xl font-bold gradient-text">TemplateHub</span>
-              </div>
-              <p className="text-gray-600 max-w-md">
-                The ultimate platform for discovering and sharing code templates. Built by developers, for developers.
-              </p>
-            </div>
-            <div>
-              <h3 className="font-semibold text-gray-900 mb-4">Product</h3>
-              <ul className="space-y-2">
-                <li><Link href="/templates" className="text-gray-600 hover:text-indigo-600 transition-colors">Templates</Link></li>
-                <li><Link href="/about" className="text-gray-600 hover:text-indigo-600 transition-colors">About</Link></li>
-              </ul>
-            </div>
-            <div>
-              <h3 className="font-semibold text-gray-900 mb-4">Legal</h3>
-              <ul className="space-y-2">
-                <li><Link href="/privacy" className="text-gray-600 hover:text-indigo-600 transition-colors">Privacy</Link></li>
-                <li><Link href="/terms" className="text-gray-600 hover:text-indigo-600 transition-colors">Terms</Link></li>
-              </ul>
-            </div>
-          </div>
-          <div className="mt-12 pt-8 border-t border-gray-200 text-center text-gray-600">
-            <p>&copy; {new Date().getFullYear()} TemplateHub. All rights reserved.</p>
-          </div>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 text-center text-gray-600">
+          <p>&copy; {new Date().getFullYear()} TemplateHub. All rights reserved.</p>
         </div>
       </footer>
     </div>
