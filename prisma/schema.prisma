@@ -11,6 +11,7 @@ generator client {
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
+  schemas  = ["codeplace"]
 }
 
 // NextAuth Models
@@ -31,6 +32,7 @@ model Account {
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([provider, providerAccountId])
+  @@schema("codeplace")
 }
 
 model Session {
@@ -39,6 +41,8 @@ model Session {
   userId       String
   expires      DateTime
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@schema("codeplace")
 }
 
 model User {
@@ -58,6 +62,8 @@ model User {
   accounts  Account[]
   sessions  Session[]
   templates Template[]
+
+  @@schema("codeplace")
 }
 
 model VerificationToken {
@@ -66,6 +72,7 @@ model VerificationToken {
   expires    DateTime
 
   @@unique([identifier, token])
+  @@schema("codeplace")
 }
 
 // Template Models
@@ -100,4 +107,5 @@ model Template {
   @@index([userId])
   @@index([category])
   @@index([featured])
+  @@schema("codeplace")
 }
