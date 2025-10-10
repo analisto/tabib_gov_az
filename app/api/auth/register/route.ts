@@ -53,6 +53,7 @@ export async function POST(req: NextRequest) {
       { status: 201 }
     )
   } catch (error) {
+    console.error('Registration error:', error)
     if (error instanceof z.ZodError) {
       return NextResponse.json(
         { error: error.issues[0].message },
@@ -61,7 +62,7 @@ export async function POST(req: NextRequest) {
     }
 
     return NextResponse.json(
-      { error: 'Something went wrong' },
+      { error: 'Something went wrong', details: error instanceof Error ? error.message : 'Unknown error' },
       { status: 500 }
     )
   }
