@@ -28,24 +28,52 @@ export default function DashboardPage() {
   const router = useRouter()
   const [templates, setTemplates] = useState<Template[]>([])
   const [loading, setLoading] = useState(true)
+  const [deleting, setDeleting] = useState<string | null>(null)
 
   useEffect(() => {
-    const fetchTemplates = async () => {
-      if (session?.user?.id) {
-        try {
-          const res = await fetch(`/api/templates?userId=${session.user.id}`)
-          const data = await res.json()
-          setTemplates(data)
-        } catch (error) {
-          console.error('Failed to fetch templates:', error)
-        } finally {
-          setLoading(false)
-        }
-      }
-    }
-
     fetchTemplates()
   }, [session])
+
+  const fetchTemplates = async () => {
+    if (session?.user?.id) {
+      try {
+        const res = await fetch(`/api/templates?userId=${session.user.id}`)
+        const data = await res.json()
+        setTemplates(data)
+      } catch (error) {
+        console.error('Failed to fetch templates:', error)
+      } finally {
+        setLoading(false)
+      }
+    }
+  }
+
+  const handleDelete = async (templateId: string) => {
+    if (!confirm('Are you sure you want to delete this template? This action cannot be undone.')) {
+      return
+    }
+
+    setDeleting(templateId)
+    try {
+      const res = await fetch(`/api/templates/${templateId}`, {
+        method: 'DELETE',
+      })
+
+      if (!res.ok) {
+        const data = await res.json()
+        alert(data.error || 'Failed to delete template')
+        return
+      }
+
+      // Remove from local state
+      setTemplates(templates.filter(t => t.id !== templateId))
+    } catch (error) {
+      console.error('Failed to delete template:', error)
+      alert('Failed to delete template. Please try again.')
+    } finally {
+      setDeleting(null)
+    }
+  }
 
   if (status === 'loading' || loading) {
     return (
@@ -219,21 +247,40 @@ export default function DashboardPage() {
                     key={template.id}
                     className="border border-gray-200 rounded-lg overflow-hidden hover:shadow-lg transition-shadow"
                   >
-                    <img
-                      src={template.previewImage}
-                      alt={template.title}
-                      className="w-full h-48 object-cover"
-                    />
+                    <Link href={`/templates/${template.id}`}>
+                      <img
+                        src={template.previewImage}
+                        alt={template.title}
+                        className="w-full h-48 object-cover cursor-pointer hover:opacity-90 transition-opacity"
+                      />
+                    </Link>
                     <div className="p-4">
-                      <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                        {template.title}
-                      </h3>
+                      <Link href={`/templates/${template.id}`}>
+                        <h3 className="text-lg font-semibold text-gray-900 mb-2 hover:text-indigo-600 cursor-pointer">
+                          {template.title}
+                        </h3>
+                      </Link>
                       <p className="text-sm text-gray-600 mb-4 line-clamp-2">
                         {template.description}
                       </p>
-                      <div className="flex justify-between items-center text-sm text-gray-500">
+                      <div className="flex justify-between items-center text-sm text-gray-500 mb-4">
                         <span>{template.views} views</span>
                         <span>{template.downloads} downloads</span>
+                      </div>
+                      <div className="flex gap-2">
+                        <Link
+                          href={`/dashboard/edit/${template.id}`}
+                          className="flex-1 px-3 py-2 text-center text-sm font-medium text-indigo-600 bg-indigo-50 rounded-md hover:bg-indigo-100 transition-colors"
+                        >
+                          Edit
+                        </Link>
+                        <button
+                          onClick={() => handleDelete(template.id)}
+                          disabled={deleting === template.id}
+                          className="flex-1 px-3 py-2 text-sm font-medium text-red-600 bg-red-50 rounded-md hover:bg-red-100 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                        >
+                          {deleting === template.id ? 'Deleting...' : 'Delete'}
+                        </button>
                       </div>
                     </div>
                   </div>
