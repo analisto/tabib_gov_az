@@ -13,6 +13,7 @@ const templateSchema = z.object({
   images: z.array(z.string().url()),
   demoUrl: z.string().url().optional().or(z.literal('')),
   githubUrl: z.string().url().optional().or(z.literal('')),
+  downloadUrl: z.string().url().optional().or(z.literal('')),
   techStack: z.array(z.string()),
 })
 
@@ -82,6 +83,7 @@ export async function POST(req: NextRequest) {
         ...validatedData,
         demoUrl: validatedData.demoUrl || null,
         githubUrl: validatedData.githubUrl || null,
+        downloadUrl: validatedData.downloadUrl || null,
         userId: session.user.id,
       },
       include: {

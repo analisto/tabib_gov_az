@@ -25,6 +25,7 @@ export default function UploadTemplatePage() {
   const [previewImage, setPreviewImage] = useState<File | null>(null)
   const [previewImageUrl, setPreviewImageUrl] = useState('')
   const [additionalImages, setAdditionalImages] = useState<File[]>([])
+  const [zipFile, setZipFile] = useState<File | null>(null)
 
   useEffect(() => {
     if (status === 'unauthenticated') {
@@ -70,6 +71,12 @@ export default function UploadTemplatePage() {
         additionalImages.map((file) => handleImageUpload(file))
       )
 
+      // Upload zip file if provided
+      let downloadUrl: string | undefined = undefined
+      if (zipFile) {
+        downloadUrl = await handleImageUpload(zipFile)
+      }
+
       setUploadingImages(false)
 
       // Create template
@@ -82,6 +89,7 @@ export default function UploadTemplatePage() {
         images: additionalImageUrls,
         demoUrl: formData.demoUrl || undefined,
         githubUrl: formData.githubUrl || undefined,
+        downloadUrl: downloadUrl,
         techStack: formData.techStack
           .split(',')
           .map((tech) => tech.trim())
@@ -331,6 +339,38 @@ export default function UploadTemplatePage() {
                 placeholder="https://github.com/username/repo"
                 className="mt-1 block w-full px-4 py-3 bg-white border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all text-gray-900"
               />
+            </div>
+
+            <div>
+              <label
+                htmlFor="zipFile"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Download Package (optional)
+              </label>
+              <p className="mt-1 text-sm text-gray-500">
+                Upload a .zip file of your template code for users to download
+              </p>
+              <input
+                type="file"
+                id="zipFile"
+                accept=".zip"
+                onChange={(e) => {
+                  const file = e.target.files?.[0]
+                  if (file) {
+                    setZipFile(file)
+                  }
+                }}
+                className="mt-2 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100"
+              />
+              {zipFile && (
+                <div className="mt-2 text-sm text-gray-600 flex items-center gap-2">
+                  <svg className="w-4 h-4 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                  </svg>
+                  {zipFile.name} ({(zipFile.size / 1024 / 1024).toFixed(2)} MB)
+                </div>
+              )}
             </div>
 
             <div className="flex gap-4">
