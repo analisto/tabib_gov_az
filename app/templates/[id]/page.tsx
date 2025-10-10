@@ -29,6 +29,13 @@ interface Template {
     github?: string
     twitter?: string
   }
+  analytics?: {
+    totalViews: number
+    uniqueViews: number
+    emailReveals: number
+    phoneReveals: number
+    totalDownloads: number
+  }
   createdAt: string
 }
 
@@ -171,8 +178,8 @@ export default function TemplateDetailPage() {
                   {template.category}
                 </span>
                 <div className="flex items-center gap-4 text-sm text-gray-500">
-                  <span>{template.views} views</span>
-                  <span>{template.downloads} downloads</span>
+                  <span>{template.analytics?.totalViews || template.views} views</span>
+                  <span>{template.analytics?.totalDownloads || template.downloads} downloads</span>
                 </div>
               </div>
 
@@ -412,11 +419,11 @@ export default function TemplateDetailPage() {
                 </div>
                 <div>
                   <dt className="text-gray-500">Views</dt>
-                  <dd className="text-gray-900">{template.views}</dd>
+                  <dd className="text-gray-900">{template.analytics?.totalViews || template.views}</dd>
                 </div>
                 <div>
                   <dt className="text-gray-500">Downloads</dt>
-                  <dd className="text-gray-900">{template.downloads}</dd>
+                  <dd className="text-gray-900">{template.analytics?.totalDownloads || template.downloads}</dd>
                 </div>
               </dl>
             </div>

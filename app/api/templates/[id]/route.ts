@@ -28,6 +28,7 @@ export async function GET(
             twitter: true,
           },
         },
+        analytics: true,
       },
     })
 
@@ -38,17 +39,8 @@ export async function GET(
       )
     }
 
-    // Increment views
-    await prisma.template.update({
-      where: {
-        id,
-      },
-      data: {
-        views: {
-          increment: 1,
-        },
-      },
-    })
+    // Note: View tracking is now handled by the analytics API endpoint
+    // This prevents double-counting of views
 
     return NextResponse.json(template)
   } catch (error) {
