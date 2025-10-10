@@ -18,16 +18,16 @@ interface Template {
 }
 
 export default function DashboardPage() {
-  const { data: session, status } = useSession()
+  const { data: session, status } = useSession({
+    required: true,
+    onUnauthenticated() {
+      // Redirect to login if not authenticated
+      window.location.href = '/login'
+    },
+  })
   const router = useRouter()
   const [templates, setTemplates] = useState<Template[]>([])
   const [loading, setLoading] = useState(true)
-
-  useEffect(() => {
-    if (status === 'unauthenticated') {
-      router.push('/login')
-    }
-  }, [status, router])
 
   useEffect(() => {
     const fetchTemplates = async () => {
