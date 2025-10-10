@@ -11,6 +11,15 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
+    // Check if R2 is configured
+    if (!process.env.R2_ACCOUNT_ID || !process.env.R2_ACCESS_KEY_ID || !process.env.R2_SECRET_ACCESS_KEY || !process.env.R2_BUCKET_NAME) {
+      console.error('R2 configuration missing')
+      return NextResponse.json(
+        { error: 'Image upload is not configured. Please contact support.' },
+        { status: 503 }
+      )
+    }
+
     const formData = await req.formData()
     const file = formData.get('file') as File
 
@@ -50,10 +59,19 @@ export async function POST(req: NextRequest) {
     const url = await uploadToR2(buffer, key, file.type)
 
     return NextResponse.json({ url }, { status: 200 })
-  } catch (error) {
+  } catch (error: any) {
     console.error('Upload error:', error)
+
+    // Provide more specific error messages
+    if (error.name === 'AccessDenied' || error.$metadata?.httpStatusCode === 403) {
+      return NextResponse.json(
+        { error: 'Image storage access denied. Please contact support to configure upload permissions.' },
+        { status: 503 }
+      )
+    }
+
     return NextResponse.json(
-      { error: 'Failed to upload file' },
+      { error: 'Failed to upload file. Please try again.' },
       { status: 500 }
     )
   }
