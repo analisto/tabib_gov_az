@@ -122,61 +122,120 @@ export default function TemplatesPage() {
         </div>
       </nav>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        {/* Header */}
-        <div className="text-center mb-12 animate-fade-in-up">
-          <h1 className="text-4xl sm:text-5xl font-bold text-gray-900 mb-4">
-            Browse <span className="gradient-text">Templates</span>
-          </h1>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-            Discover amazing code templates from our community of developers
+      {/* Hero Section */}
+      <div className="relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-br from-violet-50 via-indigo-50 to-blue-50 opacity-60"></div>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24 relative">
+          <div className="text-center animate-fade-in-up">
+            <h1 className="text-5xl sm:text-6xl lg:text-7xl font-extrabold text-gray-900 mb-6 leading-tight">
+              Build Faster with
+              <span className="block gradient-text mt-2">Premium Templates</span>
+            </h1>
+            <p className="text-lg sm:text-xl text-gray-600 max-w-3xl mx-auto mb-8 leading-relaxed">
+              Discover, download, and deploy beautiful code templates crafted by developers worldwide.
+              Save time and focus on what matters.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+              <Link
+                href="/register"
+                className="px-8 py-4 text-base font-semibold text-white bg-gradient-to-r from-violet-600 to-indigo-600 rounded-xl hover:from-violet-700 hover:to-indigo-700 transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
+              >
+                Get Started Free
+              </Link>
+              <Link
+                href="#templates"
+                className="px-8 py-4 text-base font-semibold text-gray-700 bg-white border-2 border-gray-300 rounded-xl hover:border-indigo-600 hover:text-indigo-600 transition-all shadow-md"
+              >
+                Browse Templates
+              </Link>
+            </div>
+          </div>
+
+          {/* Stats */}
+          <div className="mt-16 grid grid-cols-2 sm:grid-cols-4 gap-6 max-w-4xl mx-auto">
+            <div className="text-center p-4 bg-white/80 backdrop-blur-sm rounded-xl shadow-md">
+              <div className="text-3xl sm:text-4xl font-bold gradient-text mb-1">{templates.length}+</div>
+              <div className="text-sm text-gray-600">Templates</div>
+            </div>
+            <div className="text-center p-4 bg-white/80 backdrop-blur-sm rounded-xl shadow-md">
+              <div className="text-3xl sm:text-4xl font-bold gradient-text mb-1">
+                {templates.reduce((acc, t) => acc + (t.analytics?.totalDownloads || t.downloads), 0)}+
+              </div>
+              <div className="text-sm text-gray-600">Downloads</div>
+            </div>
+            <div className="text-center p-4 bg-white/80 backdrop-blur-sm rounded-xl shadow-md">
+              <div className="text-3xl sm:text-4xl font-bold gradient-text mb-1">
+                {new Set(templates.map(t => t.user.id)).size}+
+              </div>
+              <div className="text-sm text-gray-600">Creators</div>
+            </div>
+            <div className="text-center p-4 bg-white/80 backdrop-blur-sm rounded-xl shadow-md">
+              <div className="text-3xl sm:text-4xl font-bold gradient-text mb-1">
+                {categories.length - 1}
+              </div>
+              <div className="text-sm text-gray-600">Categories</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="templates" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        {/* Section Header */}
+        <div className="text-center mb-10">
+          <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-3">
+            Explore Templates
+          </h2>
+          <p className="text-gray-600 max-w-2xl mx-auto">
+            Find the perfect starting point for your next project
           </p>
         </div>
 
         {/* Search and Filters */}
-        <div className="mb-8 space-y-4 animate-fade-in">
+        <div className="mb-10 space-y-6 animate-fade-in">
           {/* Search Bar */}
-          <div className="relative max-w-2xl mx-auto">
-            <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-              <svg className="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <div className="relative max-w-3xl mx-auto">
+            <div className="absolute inset-y-0 left-0 pl-5 flex items-center pointer-events-none">
+              <svg className="h-6 w-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
               </svg>
             </div>
             <input
               type="text"
-              placeholder="Search templates..."
+              placeholder="Search by title, description, or technology..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="block w-full pl-12 pr-4 py-4 border border-gray-300 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent bg-white text-gray-900 placeholder-gray-400"
+              className="block w-full pl-14 pr-6 py-5 border-2 border-gray-200 rounded-2xl shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 bg-white text-gray-900 placeholder-gray-400 text-base transition-all"
             />
           </div>
 
           {/* Category Filter and Sort */}
-          <div className="flex flex-col sm:flex-row gap-4 items-center justify-between">
+          <div className="flex flex-col lg:flex-row gap-6 items-stretch lg:items-center justify-between">
             {/* Categories */}
-            <div className="flex flex-wrap gap-2 justify-center">
-              {categories.map((category) => (
-                <button
-                  key={category}
-                  onClick={() => setSelectedCategory(category)}
-                  className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
-                    selectedCategory === category
-                      ? 'bg-gradient-to-r from-violet-600 to-indigo-600 text-white shadow-md'
-                      : 'bg-white text-gray-700 hover:bg-gray-50 border border-gray-200'
-                  }`}
-                >
-                  {category}
-                </button>
-              ))}
+            <div className="flex-1">
+              <div className="flex flex-wrap gap-2 justify-center lg:justify-start">
+                {categories.map((category) => (
+                  <button
+                    key={category}
+                    onClick={() => setSelectedCategory(category)}
+                    className={`px-5 py-2.5 rounded-xl text-sm font-semibold transition-all transform hover:scale-105 ${
+                      selectedCategory === category
+                        ? 'bg-gradient-to-r from-violet-600 to-indigo-600 text-white shadow-lg shadow-indigo-200'
+                        : 'bg-white text-gray-700 hover:bg-gray-50 border-2 border-gray-200 hover:border-indigo-300'
+                    }`}
+                  >
+                    {category}
+                  </button>
+                ))}
+              </div>
             </div>
 
             {/* Sort */}
-            <div className="flex items-center gap-2">
-              <span className="text-sm text-gray-600">Sort by:</span>
+            <div className="flex items-center gap-3 justify-center lg:justify-end">
+              <span className="text-sm font-medium text-gray-700 whitespace-nowrap">Sort by:</span>
               <select
                 value={sortBy}
                 onChange={(e) => setSortBy(e.target.value)}
-                className="px-4 py-2 border border-gray-300 rounded-lg bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm"
+                className="px-5 py-2.5 border-2 border-gray-200 rounded-xl bg-white text-gray-900 font-medium focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-sm cursor-pointer"
               >
                 <option value="recent">Most Recent</option>
                 <option value="popular">Most Popular</option>
@@ -187,16 +246,17 @@ export default function TemplatesPage() {
         </div>
 
         {/* Results Count */}
-        <div className="mb-6">
-          <p className="text-gray-600">
-            Showing <span className="font-semibold">{filteredTemplates.length}</span> template{filteredTemplates.length !== 1 ? 's' : ''}
+        <div className="mb-8">
+          <p className="text-gray-600 font-medium">
+            Showing <span className="text-indigo-600 font-bold">{filteredTemplates.length}</span> template{filteredTemplates.length !== 1 ? 's' : ''}
           </p>
         </div>
 
         {/* Templates Grid */}
         {loading ? (
-          <div className="flex justify-center items-center py-20">
-            <div className="animate-spin rounded-full h-12 w-12 border-4 border-indigo-600 border-t-transparent"></div>
+          <div className="flex flex-col justify-center items-center py-32">
+            <div className="animate-spin rounded-full h-16 w-16 border-4 border-indigo-600 border-t-transparent mb-4"></div>
+            <p className="text-gray-600 text-sm">Loading amazing templates...</p>
           </div>
         ) : filteredTemplates.length === 0 ? (
           <div className="text-center py-20 animate-fade-in">
@@ -213,16 +273,16 @@ export default function TemplatesPage() {
             </Link>
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 pb-12">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 lg:gap-8 pb-16">
             {filteredTemplates.map((template, index) => (
               <Link
                 key={template.id}
                 href={`/templates/${template.id}`}
-                className="group card-hover bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden animate-fade-in-up"
+                className="group bg-white rounded-2xl shadow-md hover:shadow-2xl border border-gray-100 hover:border-indigo-200 overflow-hidden animate-fade-in-up transition-all duration-300 transform hover:-translate-y-2"
                 style={{ animationDelay: `${index * 0.05}s` }}
               >
                 {/* Image */}
-                <div className="relative h-48 bg-gradient-to-br from-violet-100 to-indigo-100 overflow-hidden">
+                <div className="relative h-52 sm:h-48 bg-gradient-to-br from-violet-100 to-indigo-100 overflow-hidden">
                   {template.previewImage ? (
                     <Image
                       src={template.previewImage}
@@ -338,9 +398,75 @@ export default function TemplatesPage() {
       </div>
 
       {/* Footer */}
-      <footer className="bg-white/60 backdrop-blur-lg border-t border-gray-200 mt-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 text-center text-gray-600">
-          <p>&copy; {new Date().getFullYear()} TemplateHub. All rights reserved.</p>
+      <footer className="bg-gradient-to-br from-gray-900 via-gray-800 to-indigo-900 text-white mt-24">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
+            {/* Brand */}
+            <div className="space-y-4">
+              <div className="flex items-center space-x-2">
+                <div className="w-10 h-10 bg-gradient-to-br from-violet-600 to-indigo-600 rounded-lg flex items-center justify-center">
+                  <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
+                  </svg>
+                </div>
+                <h3 className="text-2xl font-bold">TemplateHub</h3>
+              </div>
+              <p className="text-gray-400 text-sm leading-relaxed">
+                Premium code templates for developers. Build faster, ship better.
+              </p>
+            </div>
+
+            {/* Quick Links */}
+            <div>
+              <h4 className="font-semibold text-lg mb-4">Quick Links</h4>
+              <ul className="space-y-3 text-gray-400 text-sm">
+                <li><Link href="/templates" className="hover:text-white transition-colors">Browse Templates</Link></li>
+                <li><Link href="/register" className="hover:text-white transition-colors">Get Started</Link></li>
+                <li><Link href="/login" className="hover:text-white transition-colors">Sign In</Link></li>
+                <li><Link href="/dashboard" className="hover:text-white transition-colors">Dashboard</Link></li>
+              </ul>
+            </div>
+
+            {/* Resources */}
+            <div>
+              <h4 className="font-semibold text-lg mb-4">Resources</h4>
+              <ul className="space-y-3 text-gray-400 text-sm">
+                <li><Link href="/about" className="hover:text-white transition-colors">About Us</Link></li>
+                <li><Link href="/privacy" className="hover:text-white transition-colors">Privacy Policy</Link></li>
+                <li><Link href="/terms" className="hover:text-white transition-colors">Terms of Service</Link></li>
+              </ul>
+            </div>
+
+            {/* Categories */}
+            <div>
+              <h4 className="font-semibold text-lg mb-4">Categories</h4>
+              <ul className="space-y-3 text-gray-400 text-sm">
+                <li><span className="hover:text-white transition-colors cursor-pointer">Landing Pages</span></li>
+                <li><span className="hover:text-white transition-colors cursor-pointer">Dashboards</span></li>
+                <li><span className="hover:text-white transition-colors cursor-pointer">E-commerce</span></li>
+                <li><span className="hover:text-white transition-colors cursor-pointer">Components</span></li>
+              </ul>
+            </div>
+          </div>
+
+          {/* Bottom Bar */}
+          <div className="pt-8 border-t border-gray-700 flex flex-col md:flex-row justify-between items-center gap-4">
+            <p className="text-gray-400 text-sm">
+              &copy; {new Date().getFullYear()} TemplateHub. All rights reserved.
+            </p>
+            <div className="flex gap-6">
+              <a href="#" className="text-gray-400 hover:text-white transition-colors">
+                <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z"/>
+                </svg>
+              </a>
+              <a href="#" className="text-gray-400 hover:text-white transition-colors">
+                <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                  <path fillRule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" clipRule="evenodd"/>
+                </svg>
+              </a>
+            </div>
+          </div>
         </div>
       </footer>
     </div>
