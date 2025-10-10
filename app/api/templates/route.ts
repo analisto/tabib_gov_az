@@ -48,6 +48,7 @@ export async function GET(req: NextRequest) {
             image: true,
           },
         },
+        analytics: true,
       },
       orderBy: {
         createdAt: 'desc',
