@@ -56,8 +56,9 @@ export async function GET(req: NextRequest) {
 
     return NextResponse.json(templates)
   } catch (error) {
+    console.error('Failed to fetch templates:', error)
     return NextResponse.json(
-      { error: 'Failed to fetch templates' },
+      { error: 'Failed to fetch templates', details: error instanceof Error ? error.message : 'Unknown error' },
       { status: 500 }
     )
   }
@@ -95,6 +96,7 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json(template, { status: 201 })
   } catch (error) {
+    console.error('Failed to create template:', error)
     if (error instanceof z.ZodError) {
       return NextResponse.json(
         { error: error.issues[0].message },
@@ -103,7 +105,7 @@ export async function POST(req: NextRequest) {
     }
 
     return NextResponse.json(
-      { error: 'Failed to create template' },
+      { error: 'Failed to create template', details: error instanceof Error ? error.message : 'Unknown error' },
       { status: 500 }
     )
   }
