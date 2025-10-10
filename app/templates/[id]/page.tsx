@@ -48,6 +48,9 @@ export default function TemplateDetailPage() {
           const data = await res.json()
           setTemplate(data)
           setSelectedImage(data.previewImage)
+
+          // Track view
+          trackAnalytics('view')
         }
       } catch (error) {
         console.error('Failed to fetch template:', error)
@@ -60,6 +63,20 @@ export default function TemplateDetailPage() {
       fetchTemplate()
     }
   }, [params.id])
+
+  const trackAnalytics = async (action: 'view' | 'email_reveal' | 'phone_reveal' | 'download') => {
+    try {
+      await fetch(`/api/templates/${params.id}/analytics`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ action }),
+      })
+    } catch (error) {
+      console.error('Analytics tracking failed:', error)
+    }
+  }
 
   if (loading) {
     return (
@@ -226,6 +243,7 @@ export default function TemplateDetailPage() {
                     href={template.githubUrl}
                     target="_blank"
                     rel="noopener noreferrer"
+                    onClick={() => trackAnalytics('download')}
                     className="flex-1 inline-flex justify-center items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50"
                   >
                     <svg
@@ -270,7 +288,12 @@ export default function TemplateDetailPage() {
                 {/* Email Contact */}
                 <div>
                   <button
-                    onClick={() => setShowEmail(!showEmail)}
+                    onClick={() => {
+                      if (!showEmail) {
+                        trackAnalytics('email_reveal')
+                      }
+                      setShowEmail(!showEmail)
+                    }}
                     className="flex items-center gap-2 text-sm text-indigo-600 hover:text-indigo-500 w-full"
                   >
                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -292,7 +315,12 @@ export default function TemplateDetailPage() {
                 {template.user.phone && (
                   <div>
                     <button
-                      onClick={() => setShowPhone(!showPhone)}
+                      onClick={() => {
+                        if (!showPhone) {
+                          trackAnalytics('phone_reveal')
+                        }
+                        setShowPhone(!showPhone)
+                      }}
                       className="flex items-center gap-2 text-sm text-indigo-600 hover:text-indigo-500 w-full"
                     >
                       <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">

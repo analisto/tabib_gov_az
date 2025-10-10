@@ -15,6 +15,12 @@ interface Template {
   views: number
   downloads: number
   createdAt: string
+  analytics?: {
+    totalViews: number
+    emailReveals: number
+    phoneReveals: number
+    totalDownloads: number
+  }
 }
 
 export default function DashboardPage() {
@@ -39,7 +45,24 @@ export default function DashboardPage() {
       try {
         const res = await fetch(`/api/templates?userId=${session.user.id}`)
         const data = await res.json()
-        setTemplates(data)
+
+        // Fetch analytics for each template
+        const templatesWithAnalytics = await Promise.all(
+          data.map(async (template: Template) => {
+            try {
+              const analyticsRes = await fetch(`/api/templates/${template.id}/analytics`)
+              if (analyticsRes.ok) {
+                const analytics = await analyticsRes.json()
+                return { ...template, analytics }
+              }
+            } catch (error) {
+              console.error('Failed to fetch analytics for template:', template.id)
+            }
+            return template
+          })
+        )
+
+        setTemplates(templatesWithAnalytics)
       } catch (error) {
         console.error('Failed to fetch templates:', error)
       } finally {
@@ -263,9 +286,40 @@ export default function DashboardPage() {
                       <p className="text-sm text-gray-600 mb-4 line-clamp-2">
                         {template.description}
                       </p>
-                      <div className="flex justify-between items-center text-sm text-gray-500 mb-4">
-                        <span>{template.views} views</span>
-                        <span>{template.downloads} downloads</span>
+
+                      {/* Analytics Section */}
+                      <div className="mb-4 p-3 bg-gray-50 rounded-lg">
+                        <div className="grid grid-cols-2 gap-2 text-xs">
+                          <div className="flex items-center gap-1">
+                            <svg className="w-3 h-3 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                            </svg>
+                            <span className="text-gray-700 font-medium">{template.analytics?.totalViews || template.views}</span>
+                            <span className="text-gray-500">views</span>
+                          </div>
+                          <div className="flex items-center gap-1">
+                            <svg className="w-3 h-3 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                            </svg>
+                            <span className="text-gray-700 font-medium">{template.analytics?.emailReveals || 0}</span>
+                            <span className="text-gray-500">emails</span>
+                          </div>
+                          <div className="flex items-center gap-1">
+                            <svg className="w-3 h-3 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+                            </svg>
+                            <span className="text-gray-700 font-medium">{template.analytics?.phoneReveals || 0}</span>
+                            <span className="text-gray-500">phones</span>
+                          </div>
+                          <div className="flex items-center gap-1">
+                            <svg className="w-3 h-3 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                            </svg>
+                            <span className="text-gray-700 font-medium">{template.analytics?.totalDownloads || template.downloads}</span>
+                            <span className="text-gray-500">downloads</span>
+                          </div>
+                        </div>
                       </div>
                       <div className="flex gap-2">
                         <Link

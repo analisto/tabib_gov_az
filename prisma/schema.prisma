@@ -101,6 +101,7 @@ model Template {
   // Relations
   userId       String
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  analytics    TemplateAnalytics?
 
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
@@ -108,5 +109,33 @@ model Template {
   @@index([userId])
   @@index([category])
   @@index([featured])
+  @@schema("codeplace")
+}
+
+// Template Analytics Model
+model TemplateAnalytics {
+  id              String   @id @default(cuid())
+  templateId      String   @unique
+  template        Template @relation(fields: [templateId], references: [id], onDelete: Cascade)
+
+  // View tracking
+  totalViews      Int      @default(0)
+  uniqueViews     Int      @default(0)
+
+  // Contact reveal tracking
+  emailReveals    Int      @default(0)
+  phoneReveals    Int      @default(0)
+
+  // Download tracking
+  totalDownloads  Int      @default(0)
+
+  // Engagement metrics
+  averageViewTime Int?     // in seconds
+  lastViewedAt    DateTime?
+
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@index([templateId])
   @@schema("codeplace")
 }
