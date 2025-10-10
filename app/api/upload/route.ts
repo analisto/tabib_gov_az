@@ -11,15 +11,6 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
-    // Check if R2 is configured
-    if (!process.env.R2_ACCOUNT_ID || !process.env.R2_ACCESS_KEY_ID || !process.env.R2_SECRET_ACCESS_KEY || !process.env.R2_BUCKET_NAME) {
-      console.error('R2 configuration missing')
-      return NextResponse.json(
-        { error: 'Image upload is not configured. Please contact support.' },
-        { status: 503 }
-      )
-    }
-
     const formData = await req.formData()
     const file = formData.get('file') as File
 
@@ -62,10 +53,19 @@ export async function POST(req: NextRequest) {
   } catch (error: any) {
     console.error('Upload error:', error)
 
-    // Provide more specific error messages
-    if (error.name === 'AccessDenied' || error.$metadata?.httpStatusCode === 403) {
+    // Provide more specific error messages based on the error type
+    if (error.name === 'AccessDenied' || error.Code === 'AccessDenied' || error.$metadata?.httpStatusCode === 403) {
       return NextResponse.json(
-        { error: 'Image storage access denied. Please contact support to configure upload permissions.' },
+        {
+          error: 'Image upload is temporarily unavailable. The storage service needs permission configuration. Please try again later or contact support.'
+        },
+        { status: 503 }
+      )
+    }
+
+    if (error.name === 'NoSuchBucket') {
+      return NextResponse.json(
+        { error: 'Storage configuration error. Please contact support.' },
         { status: 503 }
       )
     }
