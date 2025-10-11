@@ -20,6 +20,8 @@ export default function UploadTemplatePage() {
     demoUrl: '',
     githubUrl: '',
     techStack: '',
+    price: '0',
+    isPaid: false,
   })
 
   const [previewImage, setPreviewImage] = useState<File | null>(null)
@@ -94,6 +96,8 @@ export default function UploadTemplatePage() {
           .split(',')
           .map((tech) => tech.trim())
           .filter(Boolean),
+        price: parseFloat(formData.price),
+        isPaid: formData.isPaid,
       }
 
       const res = await fetch('/api/templates', {
@@ -371,6 +375,61 @@ export default function UploadTemplatePage() {
                   {zipFile.name} ({(zipFile.size / 1024 / 1024).toFixed(2)} MB)
                 </div>
               )}
+            </div>
+
+            {/* Pricing Section */}
+            <div className="border-t pt-6">
+              <h3 className="text-lg font-semibold text-gray-900 mb-4">Pricing</h3>
+
+              <div className="space-y-4">
+                <div className="flex items-center gap-4">
+                  <label className="flex items-center cursor-pointer">
+                    <input
+                      type="radio"
+                      name="pricing"
+                      checked={!formData.isPaid}
+                      onChange={() => setFormData({ ...formData, isPaid: false, price: '0' })}
+                      className="w-4 h-4 text-indigo-600 focus:ring-indigo-500"
+                    />
+                    <span className="ml-2 text-sm font-medium text-gray-700">
+                      Free - Anyone can download
+                    </span>
+                  </label>
+                </div>
+
+                <div className="space-y-3">
+                  <label className="flex items-center cursor-pointer">
+                    <input
+                      type="radio"
+                      name="pricing"
+                      checked={formData.isPaid}
+                      onChange={() => setFormData({ ...formData, isPaid: true })}
+                      className="w-4 h-4 text-indigo-600 focus:ring-indigo-500"
+                    />
+                    <span className="ml-2 text-sm font-medium text-gray-700">
+                      Paid - One-time purchase
+                    </span>
+                  </label>
+
+                  {formData.isPaid && (
+                    <div className="ml-6 flex items-center gap-2">
+                      <input
+                        type="number"
+                        min="0.01"
+                        step="0.01"
+                        value={formData.price}
+                        onChange={(e) => setFormData({ ...formData, price: e.target.value })}
+                        placeholder="0.00"
+                        className="w-32 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-gray-900"
+                      />
+                      <span className="text-sm font-medium text-gray-700">AZN</span>
+                      <p className="text-xs text-gray-500 ml-2">
+                        Users must pay to download the template
+                      </p>
+                    </div>
+                  )}
+                </div>
+              </div>
             </div>
 
             <div className="flex gap-4">
