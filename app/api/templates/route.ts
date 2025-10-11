@@ -13,7 +13,7 @@ const templateSchema = z.object({
   images: z.array(z.string().url()),
   demoUrl: z.string().url().optional().or(z.literal('')),
   githubUrl: z.string().url().optional().or(z.literal('')),
-  downloadUrl: z.string().url().optional().or(z.literal('')),
+  downloadUrl: z.string().url().optional().or(z.literal('')).or(z.undefined()),
   techStack: z.array(z.string()),
 })
 
