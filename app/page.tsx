@@ -122,71 +122,14 @@ export default function TemplatesPage() {
         </div>
       </nav>
 
-      {/* Hero Section */}
-      <div className="relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-violet-50 via-indigo-50 to-blue-50 opacity-60"></div>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24 relative">
-          <div className="text-center animate-fade-in-up">
-            <h1 className="text-5xl sm:text-6xl lg:text-7xl font-extrabold text-gray-900 mb-6 leading-tight">
-              Build Faster with
-              <span className="block gradient-text mt-2">Premium Templates</span>
-            </h1>
-            <p className="text-lg sm:text-xl text-gray-600 max-w-3xl mx-auto mb-8 leading-relaxed">
-              Discover, download, and deploy beautiful code templates crafted by developers worldwide.
-              Save time and focus on what matters.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-              <Link
-                href="/register"
-                className="px-8 py-4 text-base font-semibold text-white bg-gradient-to-r from-violet-600 to-indigo-600 rounded-xl hover:from-violet-700 hover:to-indigo-700 transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
-              >
-                Get Started Free
-              </Link>
-              <Link
-                href="#templates"
-                className="px-8 py-4 text-base font-semibold text-gray-700 bg-white border-2 border-gray-300 rounded-xl hover:border-indigo-600 hover:text-indigo-600 transition-all shadow-md"
-              >
-                Browse Templates
-              </Link>
-            </div>
-          </div>
-
-          {/* Stats */}
-          <div className="mt-16 grid grid-cols-2 sm:grid-cols-4 gap-6 max-w-4xl mx-auto">
-            <div className="text-center p-4 bg-white/80 backdrop-blur-sm rounded-xl shadow-md">
-              <div className="text-3xl sm:text-4xl font-bold gradient-text mb-1">{templates.length}+</div>
-              <div className="text-sm text-gray-600">Templates</div>
-            </div>
-            <div className="text-center p-4 bg-white/80 backdrop-blur-sm rounded-xl shadow-md">
-              <div className="text-3xl sm:text-4xl font-bold gradient-text mb-1">
-                {templates.reduce((acc, t) => acc + (t.analytics?.totalDownloads || t.downloads), 0)}+
-              </div>
-              <div className="text-sm text-gray-600">Downloads</div>
-            </div>
-            <div className="text-center p-4 bg-white/80 backdrop-blur-sm rounded-xl shadow-md">
-              <div className="text-3xl sm:text-4xl font-bold gradient-text mb-1">
-                {new Set(templates.map(t => t.user.id)).size}+
-              </div>
-              <div className="text-sm text-gray-600">Creators</div>
-            </div>
-            <div className="text-center p-4 bg-white/80 backdrop-blur-sm rounded-xl shadow-md">
-              <div className="text-3xl sm:text-4xl font-bold gradient-text mb-1">
-                {categories.length - 1}
-              </div>
-              <div className="text-sm text-gray-600">Categories</div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div id="templates" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        {/* Section Header */}
-        <div className="text-center mb-10">
-          <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-3">
-            Explore Templates
-          </h2>
-          <p className="text-gray-600 max-w-2xl mx-auto">
-            Find the perfect starting point for your next project
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {/* Page Header */}
+        <div className="mb-8">
+          <h1 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-2">
+            Browse <span className="gradient-text">Templates</span>
+          </h1>
+          <p className="text-gray-600">
+            Discover and download amazing code templates from our community
           </p>
         </div>
 
