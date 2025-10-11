@@ -19,19 +19,23 @@ export async function POST(req: NextRequest) {
     }
 
     // Validate file type
-    const allowedTypes = ['image/jpeg', 'image/png', 'image/webp', 'image/gif']
-    if (!allowedTypes.includes(file.type)) {
+    const allowedImageTypes = ['image/jpeg', 'image/png', 'image/webp', 'image/gif']
+    const allowedZipTypes = ['application/zip', 'application/x-zip-compressed']
+    const isImage = allowedImageTypes.includes(file.type)
+    const isZip = allowedZipTypes.includes(file.type) || file.name.endsWith('.zip')
+
+    if (!isImage && !isZip) {
       return NextResponse.json(
-        { error: 'Invalid file type. Only JPEG, PNG, WebP, and GIF are allowed' },
+        { error: 'Invalid file type. Only images (JPEG, PNG, WebP, GIF) and ZIP files are allowed' },
         { status: 400 }
       )
     }
 
-    // Validate file size (5MB max)
-    const maxSize = 5 * 1024 * 1024 // 5MB
+    // Validate file size (5MB for images, 50MB for zips)
+    const maxSize = isZip ? 50 * 1024 * 1024 : 5 * 1024 * 1024 // 50MB for zip, 5MB for images
     if (file.size > maxSize) {
       return NextResponse.json(
-        { error: 'File size exceeds 5MB limit' },
+        { error: `File size exceeds ${isZip ? '50MB' : '5MB'} limit` },
         { status: 400 }
       )
     }
@@ -46,8 +50,9 @@ export async function POST(req: NextRequest) {
     const extension = file.name.split('.').pop()
     const key = `templates/${session.user.id}/${timestamp}-${randomString}.${extension}`
 
-    // Upload to R2
-    const url = await uploadToR2(buffer, key, file.type)
+    // Upload to R2 with correct content type
+    const contentType = isZip ? 'application/zip' : file.type
+    const url = await uploadToR2(buffer, key, contentType)
 
     return NextResponse.json({ url }, { status: 200 })
   } catch (error: any) {
