@@ -151,34 +151,31 @@ export default function TemplatesPage() {
             />
           </div>
 
-          {/* Category Filter and Sort */}
-          <div className="flex flex-col lg:flex-row gap-6 items-stretch lg:items-center justify-between">
-            {/* Categories */}
-            <div className="flex-1">
-              <div className="flex flex-wrap gap-2 justify-center lg:justify-start">
+          {/* Filters Row */}
+          <div className="flex flex-col sm:flex-row gap-4 items-stretch sm:items-center justify-between bg-white p-4 rounded-2xl shadow-sm border border-gray-200">
+            {/* Category Dropdown */}
+            <div className="flex items-center gap-3 flex-1">
+              <label className="text-sm font-semibold text-gray-700 whitespace-nowrap">Category:</label>
+              <select
+                value={selectedCategory}
+                onChange={(e) => setSelectedCategory(e.target.value)}
+                className="flex-1 sm:flex-initial px-4 py-2.5 border-2 border-gray-200 rounded-xl bg-white text-gray-900 font-medium focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-sm cursor-pointer hover:border-indigo-300 transition-colors"
+              >
                 {categories.map((category) => (
-                  <button
-                    key={category}
-                    onClick={() => setSelectedCategory(category)}
-                    className={`px-5 py-2.5 rounded-xl text-sm font-semibold transition-all transform hover:scale-105 ${
-                      selectedCategory === category
-                        ? 'bg-gradient-to-r from-violet-600 to-indigo-600 text-white shadow-lg shadow-indigo-200'
-                        : 'bg-white text-gray-700 hover:bg-gray-50 border-2 border-gray-200 hover:border-indigo-300'
-                    }`}
-                  >
+                  <option key={category} value={category}>
                     {category}
-                  </button>
+                  </option>
                 ))}
-              </div>
+              </select>
             </div>
 
-            {/* Sort */}
-            <div className="flex items-center gap-3 justify-center lg:justify-end">
-              <span className="text-sm font-medium text-gray-700 whitespace-nowrap">Sort by:</span>
+            {/* Sort Dropdown */}
+            <div className="flex items-center gap-3">
+              <label className="text-sm font-semibold text-gray-700 whitespace-nowrap">Sort by:</label>
               <select
                 value={sortBy}
                 onChange={(e) => setSortBy(e.target.value)}
-                className="px-5 py-2.5 border-2 border-gray-200 rounded-xl bg-white text-gray-900 font-medium focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-sm cursor-pointer"
+                className="px-4 py-2.5 border-2 border-gray-200 rounded-xl bg-white text-gray-900 font-medium focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-sm cursor-pointer hover:border-indigo-300 transition-colors"
               >
                 <option value="recent">Most Recent</option>
                 <option value="popular">Most Popular</option>
