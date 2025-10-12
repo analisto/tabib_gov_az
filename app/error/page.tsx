@@ -182,10 +182,10 @@ function PaymentErrorContent() {
             <p className="text-sm text-gray-600">
               Need help? Contact our support team at{' '}
               <a
-                href="mailto:support@codeplace.com"
+                href="mailto:support@mwp.codes"
                 className="text-indigo-600 hover:text-indigo-700 font-medium"
               >
-                support@codeplace.com
+                support@mwp.codes
               </a>
             </p>
           </div>
