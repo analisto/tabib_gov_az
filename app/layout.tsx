@@ -12,7 +12,7 @@ export const metadata: Metadata = {
   authors: [{ name: "TemplateHub" }],
   creator: "TemplateHub",
   publisher: "TemplateHub",
-  metadataBase: new URL(process.env.NEXTAUTH_URL || "http://localhost:3000"),
+  metadataBase: new URL(process.env.NEXTAUTH_URL || "https://www.mwp.codes"),
   alternates: {
     canonical: "/",
   },

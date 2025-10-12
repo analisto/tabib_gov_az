@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
-import { initiatePayment } from '@/lib/epoint'
+import { createLemonSqueezyCheckout } from '@/lib/lemonsqueezy'
 import { z } from 'zod'
 
 const initiatePaymentSchema = z.object({
@@ -71,26 +71,38 @@ export async function POST(req: NextRequest) {
         templateId,
         userId: session.user.id,
         amount: template.price,
-        currency: 'AZN',
+        currency: 'USD', // LemonSqueezy uses USD by default and handles conversion
         status: 'pending',
       },
     })
 
-    // Get base URL for callbacks
-    const baseUrl = process.env.NEXTAUTH_URL || 'http://localhost:3000'
+    // Create LemonSqueezy checkout
+    // Note: You need to create a product and variant in LemonSqueezy dashboard
+    // For now, we'll use environment variables for product/variant IDs
+    const variantId = process.env.LEMONSQUEEZY_VARIANT_ID || ''
 
-    // Initiate payment with Epoint
-    const paymentResult = await initiatePayment({
+    if (!variantId) {
+      return NextResponse.json(
+        { error: 'LemonSqueezy product not configured' },
+        { status: 500 }
+      )
+    }
+
+    const checkoutResult = await createLemonSqueezyCheckout({
+      productId: process.env.LEMONSQUEEZY_PRODUCT_ID || '',
+      variantId,
       orderId,
       amount: Number(template.price),
       description: `Purchase: ${template.title}`,
-      successUrl: `${baseUrl}/payments/success?orderId=${orderId}`,
-      errorUrl: `${baseUrl}/error?orderId=${orderId}`,
-      resultUrl: `${baseUrl}/api/payments/result`,
-      language: 'en',
+      userEmail: session.user.email || '',
+      userName: session.user.name || '',
+      customData: {
+        template_id: templateId,
+        user_id: session.user.id,
+      },
     })
 
-    if (!paymentResult.success) {
+    if (!checkoutResult.success) {
       // Update purchase status to failed
       await prisma.purchase.update({
         where: { id: purchase.id },
@@ -98,22 +110,22 @@ export async function POST(req: NextRequest) {
       })
 
       return NextResponse.json(
-        { error: paymentResult.error || 'Failed to initiate payment' },
+        { error: checkoutResult.error || 'Failed to initiate payment' },
         { status: 500 }
       )
     }
 
-    // Update purchase with Epoint transaction ID
+    // Update purchase with LemonSqueezy checkout ID
     await prisma.purchase.update({
       where: { id: purchase.id },
       data: {
-        transactionId: paymentResult.transactionId,
+        epointOrderId: checkoutResult.checkoutId, // Reusing this field for LemonSqueezy checkout ID
       },
     })
 
     return NextResponse.json({
       success: true,
-      paymentUrl: paymentResult.paymentUrl,
+      checkoutUrl: checkoutResult.checkoutUrl,
       orderId,
     })
   } catch (error) {
