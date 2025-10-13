@@ -24,7 +24,7 @@ interface CheckoutParams {
   productId: string
   variantId: string
   orderId: string
-  amount: number
+  amount: number // Price in USD (e.g., 15.99)
   description: string
   userEmail: string
   userName?: string
@@ -47,7 +47,9 @@ export async function createLemonSqueezyCheckout(
   try {
     const checkoutData = {
       productOptions: {
-        enabledVariants: [params.variantId],
+        enabledVariants: [parseInt(params.variantId)],
+        name: params.description,
+        description: params.description,
       },
       checkoutOptions: {
         embed: false,
@@ -57,8 +59,11 @@ export async function createLemonSqueezyCheckout(
       checkoutData: {
         email: params.userEmail,
         name: params.userName || '',
+        // Store price and order info in custom data
+        // The variant in LemonSqueezy should be set to "Pay what you want" or have variable pricing
         custom: {
           order_id: params.orderId,
+          template_price: params.amount, // Store the price from your database
           ...params.customData,
         },
       },
@@ -69,7 +74,7 @@ export async function createLemonSqueezyCheckout(
 
     const response = await createCheckout(
       LEMONSQUEEZY_CONFIG.storeId,
-      params.variantId,
+      parseInt(params.variantId),
       checkoutData
     )
 
