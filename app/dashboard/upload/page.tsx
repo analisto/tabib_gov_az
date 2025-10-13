@@ -422,9 +422,9 @@ export default function UploadTemplatePage() {
                         placeholder="0.00"
                         className="w-32 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-gray-900"
                       />
-                      <span className="text-sm font-medium text-gray-700">AZN</span>
+                      <span className="text-sm font-medium text-gray-700">USD</span>
                       <p className="text-xs text-gray-500 ml-2">
-                        Users must pay to download the template
+                        International payments via LemonSqueezy
                       </p>
                     </div>
                   )}

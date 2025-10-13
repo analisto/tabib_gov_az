@@ -114,9 +114,9 @@ export default function TemplateDetailPage() {
 
       const data = await res.json()
 
-      if (res.ok && data.paymentUrl) {
-        // Redirect to Epoint payment page
-        window.location.href = data.paymentUrl
+      if (res.ok && data.checkoutUrl) {
+        // Redirect to LemonSqueezy checkout page
+        window.location.href = data.checkoutUrl
       } else {
         alert(data.error || 'Failed to initiate payment')
       }
@@ -391,7 +391,7 @@ export default function TemplateDetailPage() {
                                   One-time purchase
                                 </span>
                                 <span className="text-2xl font-bold text-indigo-600">
-                                  {Number(template.price).toFixed(2)} AZN
+                                  ${Number(template.price).toFixed(2)} USD
                                 </span>
                               </div>
                             </div>
@@ -443,7 +443,7 @@ export default function TemplateDetailPage() {
                               )}
                             </button>
                             <p className="text-xs text-center text-gray-500">
-                              Secure payment powered by Epoint
+                              Secure international payment powered by LemonSqueezy
                             </p>
                           </div>
                         )}
