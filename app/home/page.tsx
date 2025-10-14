@@ -58,7 +58,7 @@ export default function Home() {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
                   </svg>
                 </div>
-                <h1 className="text-2xl font-bold gradient-text">TemplateHub</h1>
+                <h1 className="text-2xl font-bold gradient-text">MVP Marketplace</h1>
               </Link>
             </div>
 
@@ -173,7 +173,7 @@ export default function Home() {
         {/* Features Grid */}
         <div className="py-20">
           <div className="text-center mb-16 animate-fade-in-up">
-            <h2 className="text-3xl sm:text-4xl font-bold text-gray-900">Why Choose TemplateHub?</h2>
+            <h2 className="text-3xl sm:text-4xl font-bold text-gray-900">Why Choose MVP Marketplace?</h2>
             <p className="mt-4 text-lg text-gray-600">Everything you need to share and discover amazing code templates</p>
           </div>
 
@@ -229,7 +229,7 @@ export default function Home() {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
                   </svg>
                 </div>
-                <span className="text-xl font-bold gradient-text">TemplateHub</span>
+                <span className="text-xl font-bold gradient-text">MVP Marketplace</span>
               </div>
               <p className="text-gray-600 max-w-md">
                 The ultimate platform for discovering and sharing code templates. Built by developers, for developers.
@@ -251,7 +251,7 @@ export default function Home() {
             </div>
           </div>
           <div className="mt-12 pt-8 border-t border-gray-200 text-center text-gray-600">
-            <p>&copy; {new Date().getFullYear()} TemplateHub. All rights reserved.</p>
+            <p>&copy; {new Date().getFullYear()} MVP Marketplace. All rights reserved.</p>
           </div>
         </div>
       </footer>

@@ -14,7 +14,7 @@ export default function TermsPage() {
           <div className="prose prose-lg max-w-none">
             <h2 className="text-2xl font-bold text-gray-900 mt-8 mb-4">Agreement to Terms</h2>
             <p className="text-gray-600 leading-relaxed mb-6">
-              By accessing or using TemplateHub, you agree to be bound by these Terms of Service and all
+              By accessing or using MVP Marketplace, you agree to be bound by these Terms of Service and all
               applicable laws and regulations. If you do not agree with any of these terms, you are prohibited
               from using this platform.
             </p>
@@ -22,7 +22,7 @@ export default function TermsPage() {
             <h2 className="text-2xl font-bold text-gray-900 mt-8 mb-4">Use License</h2>
             <p className="text-gray-600 leading-relaxed mb-6">
               Subject to your compliance with these Terms, we grant you a limited, non-exclusive,
-              non-transferable license to access and use TemplateHub for your personal or commercial purposes.
+              non-transferable license to access and use MVP Marketplace for your personal or commercial purposes.
             </p>
 
             <h2 className="text-2xl font-bold text-gray-900 mt-8 mb-4">User Accounts</h2>
@@ -46,7 +46,7 @@ export default function TermsPage() {
 
             <h2 className="text-2xl font-bold text-gray-900 mt-8 mb-4">Intellectual Property</h2>
             <p className="text-gray-600 leading-relaxed mb-6">
-              You retain ownership of the content you upload to TemplateHub. By uploading content, you grant
+              You retain ownership of the content you upload to MVP Marketplace. By uploading content, you grant
               us a worldwide, non-exclusive license to use, display, and distribute your content on our platform.
               Other users may view and use your templates according to the terms you specify.
             </p>
@@ -63,14 +63,14 @@ export default function TermsPage() {
 
             <h2 className="text-2xl font-bold text-gray-900 mt-8 mb-4">Disclaimer</h2>
             <p className="text-gray-600 leading-relaxed mb-6">
-              TemplateHub is provided "as is" without any warranties, express or implied. We do not guarantee
+              MVP Marketplace is provided "as is" without any warranties, express or implied. We do not guarantee
               that the platform will be uninterrupted, secure, or error-free. Templates are provided by the
               community and we do not guarantee their quality, functionality, or suitability for any purpose.
             </p>
 
             <h2 className="text-2xl font-bold text-gray-900 mt-8 mb-4">Limitation of Liability</h2>
             <p className="text-gray-600 leading-relaxed mb-6">
-              To the maximum extent permitted by law, TemplateHub shall not be liable for any indirect,
+              To the maximum extent permitted by law, MVP Marketplace shall not be liable for any indirect,
               incidental, special, consequential, or punitive damages resulting from your use of the platform.
             </p>
 

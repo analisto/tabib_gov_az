@@ -14,7 +14,7 @@ export default function PrivacyPage() {
           <div className="prose prose-lg max-w-none">
             <h2 className="text-2xl font-bold text-gray-900 mt-8 mb-4">Introduction</h2>
             <p className="text-gray-600 leading-relaxed mb-6">
-              TemplateHub ("we", "our", or "us") is committed to protecting your privacy. This Privacy Policy
+              MVP Marketplace ("we", "our", or "us") is committed to protecting your privacy. This Privacy Policy
               explains how we collect, use, disclose, and safeguard your information when you use our platform.
             </p>
 
