@@ -49,9 +49,6 @@ export default function TemplateDetailPage() {
   const [selectedImage, setSelectedImage] = useState('')
   const [showEmail, setShowEmail] = useState(false)
   const [showPhone, setShowPhone] = useState(false)
-  const [hasPurchased, setHasPurchased] = useState(false)
-  const [checkingPurchase, setCheckingPurchase] = useState(false)
-  const [initiatingPayment, setInitiatingPayment] = useState(false)
 
   useEffect(() => {
     const fetchTemplate = async () => {
@@ -64,11 +61,6 @@ export default function TemplateDetailPage() {
 
           // Track view
           trackAnalytics('view')
-
-          // Check if user has purchased this template (if it's paid)
-          if (data.isPaid) {
-            checkPurchaseStatus(data.id)
-          }
         }
       } catch (error) {
         console.error('Failed to fetch template:', error)
@@ -81,52 +73,6 @@ export default function TemplateDetailPage() {
       fetchTemplate()
     }
   }, [params.id])
-
-  const checkPurchaseStatus = async (templateId: string) => {
-    setCheckingPurchase(true)
-    try {
-      const res = await fetch(`/api/purchases/check?templateId=${templateId}`)
-      if (res.ok) {
-        const data = await res.json()
-        setHasPurchased(data.hasPurchased)
-      }
-    } catch (error) {
-      console.error('Failed to check purchase status:', error)
-    } finally {
-      setCheckingPurchase(false)
-    }
-  }
-
-  const handlePurchase = async () => {
-    if (!template) return
-
-    setInitiatingPayment(true)
-    try {
-      const res = await fetch('/api/payments/initiate', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          templateId: template.id,
-        }),
-      })
-
-      const data = await res.json()
-
-      if (res.ok && data.checkoutUrl) {
-        // Redirect to LemonSqueezy checkout page
-        window.location.href = data.checkoutUrl
-      } else {
-        alert(data.error || 'Failed to initiate payment')
-      }
-    } catch (error) {
-      console.error('Payment initiation error:', error)
-      alert('Failed to initiate payment. Please try again.')
-    } finally {
-      setInitiatingPayment(false)
-    }
-  }
 
   const trackAnalytics = async (action: 'view' | 'email_reveal' | 'phone_reveal' | 'download') => {
     try {
@@ -326,10 +272,10 @@ export default function TemplateDetailPage() {
                   )}
                 </div>
 
-                {/* Download or Purchase Button */}
+                {/* Download or Contact to Purchase */}
                 {template.downloadUrl && (
                   <>
-                    {!template.isPaid || template.price === 0 ? (
+                    {!template.isPaid || Number(template.price) === 0 ? (
                       // Free template - show download button
                       <a
                         href={template.downloadUrl}
@@ -353,101 +299,46 @@ export default function TemplateDetailPage() {
                         Download Template (.zip)
                       </a>
                     ) : (
-                      // Paid template
-                      <>
-                        {checkingPurchase ? (
-                          <div className="w-full inline-flex justify-center items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-gray-100">
-                            Checking purchase status...
+                      // Paid template - show price and contact info
+                      <div className="space-y-3">
+                        <div className="bg-indigo-50 border border-indigo-200 rounded-lg p-4">
+                          <div className="flex items-center justify-between">
+                            <span className="text-sm font-medium text-gray-700">
+                              Purchase Price
+                            </span>
+                            <span className="text-2xl font-bold text-indigo-600">
+                              ${Number(template.price).toFixed(2)} USD
+                            </span>
                           </div>
-                        ) : hasPurchased ? (
-                          // User has purchased - show download button
-                          <a
-                            href={template.downloadUrl}
-                            download
-                            onClick={() => trackAnalytics('download')}
-                            className="w-full inline-flex justify-center items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 shadow-md"
-                          >
-                            <svg
-                              className="w-5 h-5 mr-2"
-                              fill="none"
-                              stroke="currentColor"
-                              viewBox="0 0 24 24"
+                        </div>
+                        <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
+                          <p className="text-sm text-gray-700 mb-3">
+                            To purchase this template, please contact the creator:
+                          </p>
+                          <div className="space-y-2">
+                            <a
+                              href={`mailto:${template.user.email}?subject=Purchase: ${template.title}&body=Hi, I'm interested in purchasing your template "${template.title}" for $${Number(template.price).toFixed(2)}.`}
+                              className="w-full inline-flex justify-center items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700"
                             >
-                              <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth={2}
-                                d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"
-                              />
-                            </svg>
-                            Download Template (.zip)
-                          </a>
-                        ) : (
-                          // User hasn't purchased - show purchase button with price
-                          <div className="space-y-3">
-                            <div className="bg-indigo-50 border border-indigo-200 rounded-lg p-4">
-                              <div className="flex items-center justify-between">
-                                <span className="text-sm font-medium text-gray-700">
-                                  One-time purchase
-                                </span>
-                                <span className="text-2xl font-bold text-indigo-600">
-                                  ${Number(template.price).toFixed(2)} USD
-                                </span>
-                              </div>
-                            </div>
-                            <button
-                              onClick={handlePurchase}
-                              disabled={initiatingPayment}
-                              className="w-full inline-flex justify-center items-center px-4 py-3 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 shadow-md disabled:opacity-50 disabled:cursor-not-allowed"
-                            >
-                              {initiatingPayment ? (
-                                <>
-                                  <svg
-                                    className="animate-spin -ml-1 mr-2 h-5 w-5 text-white"
-                                    fill="none"
-                                    viewBox="0 0 24 24"
-                                  >
-                                    <circle
-                                      className="opacity-25"
-                                      cx="12"
-                                      cy="12"
-                                      r="10"
-                                      stroke="currentColor"
-                                      strokeWidth="4"
-                                    />
-                                    <path
-                                      className="opacity-75"
-                                      fill="currentColor"
-                                      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                                    />
-                                  </svg>
-                                  Processing...
-                                </>
-                              ) : (
-                                <>
-                                  <svg
-                                    className="w-5 h-5 mr-2"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    viewBox="0 0 24 24"
-                                  >
-                                    <path
-                                      strokeLinecap="round"
-                                      strokeLinejoin="round"
-                                      strokeWidth={2}
-                                      d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"
-                                    />
-                                  </svg>
-                                  Purchase & Download
-                                </>
-                              )}
-                            </button>
-                            <p className="text-xs text-center text-gray-500">
-                              Secure international payment powered by LemonSqueezy
-                            </p>
+                              <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                              </svg>
+                              Contact via Email
+                            </a>
+                            {template.user.phone && (
+                              <a
+                                href={`tel:${template.user.phone}`}
+                                className="w-full inline-flex justify-center items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50"
+                              >
+                                <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+                                </svg>
+                                Call: {template.user.phone}
+                              </a>
+                            )}
                           </div>
-                        )}
-                      </>
+                        </div>
+                      </div>
                     )}
                   </>
                 )}
