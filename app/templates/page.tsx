@@ -15,6 +15,8 @@ interface Template {
   views: number
   downloads: number
   featured: boolean
+  price: number
+  isPaid: boolean
   user: {
     id: string
     name: string | null
@@ -236,11 +238,22 @@ export default function TemplatesPage() {
                       </svg>
                     </div>
                   )}
-                  {template.featured && (
-                    <div className="absolute top-3 right-3 bg-gradient-to-r from-amber-400 to-orange-500 text-white text-xs font-bold px-3 py-1 rounded-full shadow-lg">
-                      ⭐ Featured
-                    </div>
-                  )}
+                  <div className="absolute top-3 right-3 flex flex-col gap-2 items-end">
+                    {template.featured && (
+                      <div className="bg-gradient-to-r from-amber-400 to-orange-500 text-white text-xs font-bold px-3 py-1 rounded-full shadow-lg">
+                        ⭐ Featured
+                      </div>
+                    )}
+                    {template.isPaid && Number(template.price) > 0 ? (
+                      <div className="bg-gradient-to-r from-emerald-500 to-teal-500 text-white text-xs font-bold px-3 py-1 rounded-full shadow-lg">
+                        ${Number(template.price).toFixed(2)}
+                      </div>
+                    ) : (
+                      <div className="bg-gradient-to-r from-blue-500 to-indigo-500 text-white text-xs font-bold px-3 py-1 rounded-full shadow-lg">
+                        FREE
+                      </div>
+                    )}
+                  </div>
                 </div>
 
                 {/* Content */}

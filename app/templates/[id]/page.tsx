@@ -176,10 +176,19 @@ export default function TemplateDetailPage() {
                 {template.title}
               </h1>
 
-              <div className="flex items-center gap-4 mb-6">
+              <div className="flex items-center gap-4 mb-6 flex-wrap">
                 <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-indigo-100 text-indigo-800">
                   {template.category}
                 </span>
+                {template.isPaid && Number(template.price) > 0 ? (
+                  <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-bold bg-gradient-to-r from-emerald-500 to-teal-500 text-white">
+                    ${Number(template.price).toFixed(2)}
+                  </span>
+                ) : (
+                  <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-bold bg-gradient-to-r from-blue-500 to-indigo-500 text-white">
+                    FREE
+                  </span>
+                )}
                 <div className="flex items-center gap-4 text-sm text-gray-500">
                   <span>{template.analytics?.totalViews || template.views} views</span>
                   <span>{template.analytics?.totalDownloads || template.downloads} downloads</span>
@@ -482,6 +491,14 @@ export default function TemplateDetailPage() {
                 Template Info
               </h3>
               <dl className="space-y-3 text-sm">
+                <div>
+                  <dt className="text-gray-500">Price</dt>
+                  <dd className="text-gray-900 font-semibold">
+                    {template.isPaid && Number(template.price) > 0
+                      ? `$${Number(template.price).toFixed(2)} USD`
+                      : 'Free'}
+                  </dd>
+                </div>
                 <div>
                   <dt className="text-gray-500">Uploaded</dt>
                   <dd className="text-gray-900">
