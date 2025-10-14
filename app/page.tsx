@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import { useSession } from 'next-auth/react'
 import Link from 'next/link'
 import Image from 'next/image'
 
@@ -46,6 +47,7 @@ const categories = [
 ]
 
 export default function TemplatesPage() {
+  const { data: session } = useSession()
   const [templates, setTemplates] = useState<Template[]>([])
   const [loading, setLoading] = useState(true)
   const [searchQuery, setSearchQuery] = useState('')
@@ -107,18 +109,37 @@ export default function TemplatesPage() {
               <h1 className="text-2xl font-bold gradient-text">MVP Marketplace</h1>
             </Link>
             <div className="flex gap-3">
-              <Link
-                href="/login"
-                className="px-4 py-2 text-sm font-medium text-gray-700 hover:text-indigo-600 transition-colors hidden sm:block"
-              >
-                Sign in
-              </Link>
-              <Link
-                href="/register"
-                className="px-5 py-2 text-sm font-medium text-white bg-gradient-to-r from-violet-600 to-indigo-600 rounded-lg hover:from-violet-700 hover:to-indigo-700 transition-all shadow-md hover:shadow-lg"
-              >
-                Get started
-              </Link>
+              {session ? (
+                <>
+                  <Link
+                    href="/dashboard/upload"
+                    className="px-4 py-2 text-sm font-medium text-gray-700 hover:text-indigo-600 transition-colors hidden sm:block"
+                  >
+                    Upload
+                  </Link>
+                  <Link
+                    href="/dashboard"
+                    className="px-5 py-2 text-sm font-medium text-white bg-gradient-to-r from-violet-600 to-indigo-600 rounded-lg hover:from-violet-700 hover:to-indigo-700 transition-all shadow-md hover:shadow-lg"
+                  >
+                    Dashboard
+                  </Link>
+                </>
+              ) : (
+                <>
+                  <Link
+                    href="/login"
+                    className="px-4 py-2 text-sm font-medium text-gray-700 hover:text-indigo-600 transition-colors hidden sm:block"
+                  >
+                    Sign in
+                  </Link>
+                  <Link
+                    href="/register"
+                    className="px-5 py-2 text-sm font-medium text-white bg-gradient-to-r from-violet-600 to-indigo-600 rounded-lg hover:from-violet-700 hover:to-indigo-700 transition-all shadow-md hover:shadow-lg"
+                  >
+                    Get started
+                  </Link>
+                </>
+              )}
             </div>
           </div>
         </div>
