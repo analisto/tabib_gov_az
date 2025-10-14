@@ -82,7 +82,7 @@ export default function RegisterPage() {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
               </svg>
             </div>
-            <span className="text-2xl font-bold gradient-text">TemplateHub</span>
+            <span className="text-2xl font-bold gradient-text">MVP Marketplace</span>
           </Link>
           <h1 className="text-3xl font-bold text-gray-900">Create your account</h1>
           <p className="mt-2 text-gray-600">Join thousands of developers today</p>

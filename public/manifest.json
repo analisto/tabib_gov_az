@@ -1,7 +1,7 @@
 {
-  "name": "TemplateHub - Code Template Marketplace",
-  "short_name": "TemplateHub",
-  "description": "Discover, share, and showcase amazing code templates",
+  "name": "MVP Marketplace - Full-Stack Web Apps for Startups",
+  "short_name": "MVP Marketplace",
+  "description": "Discover, buy, and sell production-ready full-stack web applications and MVPs",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#ffffff",

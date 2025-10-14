@@ -139,9 +139,9 @@ export default function UploadTemplatePage() {
       <Navbar />
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900">Upload Template</h1>
+          <h1 className="text-3xl font-bold text-gray-900">Upload Your Project</h1>
           <p className="mt-2 text-gray-600">
-            Share your code template with the community
+            Share your full-stack web application or MVP with the community
           </p>
         </div>
 
@@ -350,10 +350,10 @@ export default function UploadTemplatePage() {
                 htmlFor="zipFile"
                 className="block text-sm font-medium text-gray-700"
               >
-                Download Package (optional)
+                Source Code Package (optional)
               </label>
               <p className="mt-1 text-sm text-gray-500">
-                Upload a .zip file of your template code for users to download
+                Upload a .zip file of your project's complete source code
               </p>
               <input
                 type="file"
@@ -439,10 +439,10 @@ export default function UploadTemplatePage() {
                 className="flex-1 py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50"
               >
                 {uploadingImages
-                  ? 'Uploading images...'
+                  ? 'Uploading files...'
                   : loading
-                  ? 'Creating template...'
-                  : 'Upload Template'}
+                  ? 'Publishing project...'
+                  : 'Publish Project'}
               </button>
               <button
                 type="button"

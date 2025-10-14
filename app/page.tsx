@@ -102,7 +102,7 @@ export default function TemplatesPage() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
                 </svg>
               </div>
-              <h1 className="text-2xl font-bold gradient-text">TemplateHub</h1>
+              <h1 className="text-2xl font-bold gradient-text">MVP Marketplace</h1>
             </Link>
             <div className="flex gap-3">
               <Link
@@ -126,10 +126,10 @@ export default function TemplatesPage() {
         {/* Page Header */}
         <div className="mb-8">
           <h1 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-2">
-            Browse <span className="gradient-text">Templates</span>
+            Browse <span className="gradient-text">Full-Stack Projects</span>
           </h1>
           <p className="text-gray-600">
-            Discover and download amazing code templates from our community
+            Discover production-ready web apps and MVPs to kickstart your business
           </p>
         </div>
 
@@ -144,7 +144,7 @@ export default function TemplatesPage() {
             </div>
             <input
               type="text"
-              placeholder="Search by title, description, or technology..."
+              placeholder="Search projects by title, description, or technology..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className="block w-full pl-14 pr-6 py-5 border-2 border-gray-200 rounded-2xl shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 bg-white text-gray-900 placeholder-gray-400 text-base transition-all"
@@ -188,7 +188,7 @@ export default function TemplatesPage() {
         {/* Results Count */}
         <div className="mb-8">
           <p className="text-gray-600 font-medium">
-            Showing <span className="text-indigo-600 font-bold">{filteredTemplates.length}</span> template{filteredTemplates.length !== 1 ? 's' : ''}
+            Showing <span className="text-indigo-600 font-bold">{filteredTemplates.length}</span> project{filteredTemplates.length !== 1 ? 's' : ''}
           </p>
         </div>
 
@@ -196,14 +196,14 @@ export default function TemplatesPage() {
         {loading ? (
           <div className="flex flex-col justify-center items-center py-32">
             <div className="animate-spin rounded-full h-16 w-16 border-4 border-indigo-600 border-t-transparent mb-4"></div>
-            <p className="text-gray-600 text-sm">Loading amazing templates...</p>
+            <p className="text-gray-600 text-sm">Loading amazing projects...</p>
           </div>
         ) : filteredTemplates.length === 0 ? (
           <div className="text-center py-20 animate-fade-in">
             <svg className="mx-auto h-24 w-24 text-gray-400 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
-            <h3 className="text-xl font-semibold text-gray-900 mb-2">No templates found</h3>
+            <h3 className="text-xl font-semibold text-gray-900 mb-2">No projects found</h3>
             <p className="text-gray-600 mb-8">Try adjusting your search or filters</p>
             <Link
               href="/register"
@@ -349,10 +349,10 @@ export default function TemplatesPage() {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
                   </svg>
                 </div>
-                <h3 className="text-2xl font-bold">TemplateHub</h3>
+                <h3 className="text-2xl font-bold">MVP Marketplace</h3>
               </div>
               <p className="text-gray-400 text-sm leading-relaxed">
-                Premium code templates for developers. Build faster, ship better.
+                Production-ready full-stack web apps and MVPs. Launch your startup faster.
               </p>
             </div>
 
@@ -360,7 +360,7 @@ export default function TemplatesPage() {
             <div>
               <h4 className="font-semibold text-lg mb-4">Quick Links</h4>
               <ul className="space-y-3 text-gray-400 text-sm">
-                <li><Link href="/templates" className="hover:text-white transition-colors">Browse Templates</Link></li>
+                <li><Link href="/templates" className="hover:text-white transition-colors">Browse Projects</Link></li>
                 <li><Link href="/register" className="hover:text-white transition-colors">Get Started</Link></li>
                 <li><Link href="/login" className="hover:text-white transition-colors">Sign In</Link></li>
                 <li><Link href="/dashboard" className="hover:text-white transition-colors">Dashboard</Link></li>
@@ -392,7 +392,7 @@ export default function TemplatesPage() {
           {/* Bottom Bar */}
           <div className="pt-8 border-t border-gray-700 flex flex-col md:flex-row justify-between items-center gap-4">
             <p className="text-gray-400 text-sm">
-              &copy; {new Date().getFullYear()} TemplateHub. All rights reserved.
+              &copy; {new Date().getFullYear()} MVP Marketplace. All rights reserved.
             </p>
             <div className="flex gap-6">
               <a href="#" className="text-gray-400 hover:text-white transition-colors">

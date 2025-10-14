@@ -141,7 +141,7 @@ export default function DashboardPage() {
               <div className="ml-5 w-0 flex-1">
                 <dl>
                   <dt className="text-sm font-medium text-gray-500 truncate">
-                    Total Templates
+                    Total Projects
                   </dt>
                   <dd className="text-3xl font-semibold text-gray-900">
                     {templates.length}
@@ -222,7 +222,7 @@ export default function DashboardPage() {
           <div className="px-6 py-4 border-b border-gray-200">
             <div className="flex justify-between items-center">
               <h2 className="text-xl font-semibold text-gray-900">
-                Your Templates
+                Your Projects
               </h2>
               <Link
                 href="/dashboard/upload"
@@ -249,17 +249,17 @@ export default function DashboardPage() {
                   />
                 </svg>
                 <h3 className="mt-2 text-sm font-medium text-gray-900">
-                  No templates
+                  No projects yet
                 </h3>
                 <p className="mt-1 text-sm text-gray-500">
-                  Get started by uploading your first template.
+                  Get started by uploading your first project.
                 </p>
                 <div className="mt-6">
                   <Link
                     href="/dashboard/upload"
                     className="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700"
                   >
-                    Upload Template
+                    Upload Project
                   </Link>
                 </div>
               </div>

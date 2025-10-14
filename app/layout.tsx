@@ -4,14 +4,14 @@ import Providers from "./providers";
 
 export const metadata: Metadata = {
   title: {
-    default: "TemplateHub - Code Template Marketplace",
-    template: "%s | TemplateHub"
+    default: "MVP Marketplace - Full-Stack Web Apps for Startups",
+    template: "%s | MVP Marketplace"
   },
-  description: "Discover, share, and showcase amazing code templates. Browse through a curated collection of templates for Next.js, React, and more.",
-  keywords: ["code templates", "web templates", "react templates", "nextjs templates", "template marketplace", "code sharing"],
-  authors: [{ name: "TemplateHub" }],
-  creator: "TemplateHub",
-  publisher: "TemplateHub",
+  description: "Buy and sell production-ready full-stack web applications and MVPs. Launch your startup faster with battle-tested code.",
+  keywords: ["mvp", "full-stack apps", "web applications", "startup code", "saas templates", "nextjs apps", "react apps", "production-ready code"],
+  authors: [{ name: "MVP Marketplace" }],
+  creator: "MVP Marketplace",
+  publisher: "MVP Marketplace",
   metadataBase: new URL(process.env.NEXTAUTH_URL || "https://www.mwp.codes"),
   alternates: {
     canonical: "/",
@@ -20,14 +20,14 @@ export const metadata: Metadata = {
     type: "website",
     locale: "en_US",
     url: "/",
-    title: "TemplateHub - Code Template Marketplace",
-    description: "Discover, share, and showcase amazing code templates",
-    siteName: "TemplateHub",
+    title: "MVP Marketplace - Full-Stack Web Apps for Startups",
+    description: "Buy and sell production-ready full-stack web applications and MVPs",
+    siteName: "MVP Marketplace",
   },
   twitter: {
     card: "summary_large_image",
-    title: "TemplateHub - Code Template Marketplace",
-    description: "Discover, share, and showcase amazing code templates",
+    title: "MVP Marketplace - Full-Stack Web Apps for Startups",
+    description: "Buy and sell production-ready full-stack web applications and MVPs",
   },
   icons: {
     icon: [

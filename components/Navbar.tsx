@@ -12,7 +12,7 @@ export default function Navbar() {
         <div className="flex justify-between h-16 items-center">
           <div className="flex items-center gap-8">
             <Link href="/" className="flex-shrink-0">
-              <h1 className="text-2xl font-bold text-indigo-600">TemplateHub</h1>
+              <h1 className="text-2xl font-bold text-indigo-600">MVP Marketplace</h1>
             </Link>
             <div className="hidden md:flex gap-6">
               <Link
@@ -38,7 +38,7 @@ export default function Navbar() {
                   href="/dashboard/upload"
                   className="px-4 py-2 text-sm font-medium text-white bg-indigo-600 rounded-md hover:bg-indigo-700"
                 >
-                  Upload Template
+                  Upload Project
                 </Link>
                 <Link
                   href="/profile"

@@ -61,7 +61,7 @@ export default function LoginPage() {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
               </svg>
             </div>
-            <span className="text-2xl font-bold gradient-text">TemplateHub</span>
+            <span className="text-2xl font-bold gradient-text">MVP Marketplace</span>
           </Link>
           <h1 className="text-3xl font-bold text-gray-900">Welcome back</h1>
           <p className="mt-2 text-gray-600">Sign in to continue to your account</p>
