@@ -98,6 +98,8 @@ export async function PUT(
         downloadUrl: body.downloadUrl,
         previewImage: body.previewImage,
         images: body.images,
+        price: body.price,
+        isPaid: body.isPaid,
       },
     })
 
