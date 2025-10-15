@@ -130,29 +130,29 @@ export default function Home() {
 
       {/* Hero Section */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="pt-20 pb-16 text-center lg:pt-32">
+        <div className="pt-12 sm:pt-20 pb-12 sm:pb-16 text-center lg:pt-32">
           <div className="animate-fade-in-up">
-            <div className="inline-flex items-center px-4 py-2 bg-white/60 rounded-full mb-8 shadow-sm">
-              <span className="text-sm font-medium text-indigo-600">✨ New templates added weekly</span>
+            <div className="inline-flex items-center px-3 sm:px-4 py-1.5 sm:py-2 bg-white/60 rounded-full mb-6 sm:mb-8 shadow-sm">
+              <span className="text-xs sm:text-sm font-medium text-indigo-600">✨ New templates added weekly</span>
             </div>
-            <h1 className="text-4xl sm:text-6xl lg:text-7xl font-extrabold text-gray-900 tracking-tight">
+            <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold text-gray-900 tracking-tight px-4">
               Discover Amazing
               <span className="block gradient-text mt-2">Code Templates</span>
             </h1>
-            <p className="mt-6 text-lg sm:text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
+            <p className="mt-4 sm:mt-6 text-base sm:text-lg md:text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed px-4">
               Browse, share, and showcase your code templates. Build faster with
               pre-made solutions from the community. Join thousands of developers today.
             </p>
-            <div className="mt-10 flex flex-col sm:flex-row gap-4 justify-center items-center">
+            <div className="mt-8 sm:mt-10 flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center items-center px-4">
               <Link
                 href="/register"
-                className="w-full sm:w-auto px-8 py-4 text-base font-semibold text-white bg-gradient-to-r from-violet-600 to-indigo-600 rounded-xl hover:from-violet-700 hover:to-indigo-700 transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
+                className="w-full sm:w-auto px-6 sm:px-8 py-3 sm:py-4 text-sm sm:text-base font-semibold text-white bg-gradient-to-r from-violet-600 to-indigo-600 rounded-xl hover:from-violet-700 hover:to-indigo-700 transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
               >
                 Start uploading free
               </Link>
               <Link
                 href="/templates"
-                className="w-full sm:w-auto px-8 py-4 text-base font-semibold text-indigo-600 bg-white rounded-xl hover:bg-gray-50 border-2 border-indigo-600 transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
+                className="w-full sm:w-auto px-6 sm:px-8 py-3 sm:py-4 text-sm sm:text-base font-semibold text-indigo-600 bg-white rounded-xl hover:bg-gray-50 border-2 border-indigo-600 transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
               >
                 Browse templates
               </Link>
@@ -160,56 +160,56 @@ export default function Home() {
           </div>
 
           {/* Stats */}
-          <div className="mt-20 grid grid-cols-3 gap-8 sm:gap-16 animate-fade-in">
+          <div className="mt-12 sm:mt-20 grid grid-cols-3 gap-4 sm:gap-8 md:gap-16 animate-fade-in px-4">
             {stats.map((stat, index) => (
               <div key={index} className="text-center">
-                <div className="text-3xl sm:text-4xl font-bold gradient-text">{stat.value}</div>
-                <div className="mt-2 text-sm sm:text-base text-gray-600">{stat.label}</div>
+                <div className="text-2xl sm:text-3xl md:text-4xl font-bold gradient-text">{stat.value}</div>
+                <div className="mt-1 sm:mt-2 text-xs sm:text-sm md:text-base text-gray-600">{stat.label}</div>
               </div>
             ))}
           </div>
         </div>
 
         {/* Features Grid */}
-        <div className="py-20">
-          <div className="text-center mb-16 animate-fade-in-up">
-            <h2 className="text-3xl sm:text-4xl font-bold text-gray-900">Why Choose MVP Marketplace?</h2>
-            <p className="mt-4 text-lg text-gray-600">Everything you need to share and discover amazing code templates</p>
+        <div className="py-12 sm:py-20">
+          <div className="text-center mb-12 sm:mb-16 animate-fade-in-up px-4">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900">Why Choose MVP Marketplace?</h2>
+            <p className="mt-3 sm:mt-4 text-base sm:text-lg text-gray-600">Everything you need to share and discover amazing code templates</p>
           </div>
 
-          <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
+          <div className="grid grid-cols-1 gap-6 sm:gap-8 md:grid-cols-2 lg:grid-cols-3 px-4">
             {features.map((feature, index) => (
               <div
                 key={index}
-                className="card-hover bg-white p-8 rounded-2xl shadow-lg border border-gray-100 animate-fade-in-up"
+                className="card-hover bg-white p-6 sm:p-8 rounded-2xl shadow-lg border border-gray-100 animate-fade-in-up"
                 style={{ animationDelay: `${index * 0.1}s` }}
               >
-                <div className={`w-14 h-14 bg-gradient-to-br ${feature.gradient} rounded-xl flex items-center justify-center mb-6 text-white shadow-md`}>
+                <div className={`w-12 h-12 sm:w-14 sm:h-14 bg-gradient-to-br ${feature.gradient} rounded-xl flex items-center justify-center mb-4 sm:mb-6 text-white shadow-md`}>
                   {feature.icon}
                 </div>
-                <h3 className="text-xl font-bold text-gray-900 mb-3">{feature.title}</h3>
-                <p className="text-gray-600 leading-relaxed">{feature.description}</p>
+                <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-2 sm:mb-3">{feature.title}</h3>
+                <p className="text-sm sm:text-base text-gray-600 leading-relaxed">{feature.description}</p>
               </div>
             ))}
           </div>
         </div>
 
         {/* CTA Section */}
-        <div className="py-20 animate-fade-in">
-          <div className="bg-gradient-to-r from-violet-600 to-indigo-600 rounded-3xl shadow-2xl overflow-hidden">
-            <div className="px-8 py-16 sm:px-16 text-center">
-              <h2 className="text-3xl sm:text-4xl font-bold text-white mb-4">
+        <div className="py-12 sm:py-20 animate-fade-in px-4">
+          <div className="bg-gradient-to-r from-violet-600 to-indigo-600 rounded-2xl sm:rounded-3xl shadow-2xl overflow-hidden">
+            <div className="px-6 py-12 sm:px-16 sm:py-16 text-center">
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-3 sm:mb-4">
                 Ready to Share Your Templates?
               </h2>
-              <p className="text-lg text-indigo-100 mb-8 max-w-2xl mx-auto">
+              <p className="text-base sm:text-lg text-indigo-100 mb-6 sm:mb-8 max-w-2xl mx-auto">
                 Join our growing community of developers and start showcasing your work today.
               </p>
               <Link
                 href="/register"
-                className="inline-flex items-center px-8 py-4 text-base font-semibold text-indigo-600 bg-white rounded-xl hover:bg-gray-50 transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
+                className="inline-flex items-center px-6 sm:px-8 py-3 sm:py-4 text-sm sm:text-base font-semibold text-indigo-600 bg-white rounded-xl hover:bg-gray-50 transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
               >
                 Create free account
-                <svg className="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="ml-2 w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
                 </svg>
               </Link>

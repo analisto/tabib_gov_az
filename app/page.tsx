@@ -97,29 +97,29 @@ export default function TemplatesPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100">
       {/* Navigation */}
-      <nav className="glass-effect border-b border-white/20 sticky top-0 z-50">
+      <nav className="glass-effect border-b border-white/20 sticky top-0 z-50 shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between h-16 items-center">
-            <Link href="/" className="flex items-center space-x-2">
-              <div className="w-8 h-8 bg-gradient-to-br from-violet-600 to-indigo-600 rounded-lg flex items-center justify-center">
-                <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <Link href="/" className="flex items-center space-x-2 flex-shrink-0">
+              <div className="w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-br from-violet-600 to-indigo-600 rounded-lg flex items-center justify-center shadow-md">
+                <svg className="w-5 h-5 sm:w-6 sm:h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
                 </svg>
               </div>
-              <h1 className="text-2xl font-bold gradient-text">MVP Marketplace</h1>
+              <h1 className="text-lg sm:text-xl md:text-2xl font-bold gradient-text whitespace-nowrap">MVP Marketplace</h1>
             </Link>
-            <div className="flex gap-3">
+            <div className="flex gap-2 sm:gap-3">
               {session ? (
                 <>
                   <Link
                     href="/dashboard/upload"
-                    className="px-4 py-2 text-sm font-medium text-gray-700 hover:text-indigo-600 transition-colors hidden sm:block"
+                    className="px-3 sm:px-4 py-2 text-xs sm:text-sm font-medium text-gray-700 hover:text-indigo-600 transition-colors hidden sm:block"
                   >
                     Upload
                   </Link>
                   <Link
                     href="/dashboard"
-                    className="px-5 py-2 text-sm font-medium text-white bg-gradient-to-r from-violet-600 to-indigo-600 rounded-lg hover:from-violet-700 hover:to-indigo-700 transition-all shadow-md hover:shadow-lg"
+                    className="px-3 sm:px-5 py-2 text-xs sm:text-sm font-medium text-white bg-gradient-to-r from-violet-600 to-indigo-600 rounded-lg hover:from-violet-700 hover:to-indigo-700 transition-all shadow-md hover:shadow-lg"
                   >
                     Dashboard
                   </Link>
@@ -128,13 +128,13 @@ export default function TemplatesPage() {
                 <>
                   <Link
                     href="/login"
-                    className="px-4 py-2 text-sm font-medium text-gray-700 hover:text-indigo-600 transition-colors hidden sm:block"
+                    className="px-3 sm:px-4 py-2 text-xs sm:text-sm font-medium text-gray-700 hover:text-indigo-600 transition-colors hidden sm:block"
                   >
                     Sign in
                   </Link>
                   <Link
                     href="/register"
-                    className="px-5 py-2 text-sm font-medium text-white bg-gradient-to-r from-violet-600 to-indigo-600 rounded-lg hover:from-violet-700 hover:to-indigo-700 transition-all shadow-md hover:shadow-lg"
+                    className="px-3 sm:px-5 py-2 text-xs sm:text-sm font-medium text-white bg-gradient-to-r from-violet-600 to-indigo-600 rounded-lg hover:from-violet-700 hover:to-indigo-700 transition-all shadow-md hover:shadow-lg whitespace-nowrap"
                   >
                     Get started
                   </Link>
@@ -217,26 +217,26 @@ export default function TemplatesPage() {
 
         {/* Templates Grid */}
         {loading ? (
-          <div className="flex flex-col justify-center items-center py-32">
-            <div className="animate-spin rounded-full h-16 w-16 border-4 border-indigo-600 border-t-transparent mb-4"></div>
-            <p className="text-gray-600 text-sm">Loading amazing projects...</p>
+          <div className="flex flex-col justify-center items-center py-20 sm:py-32">
+            <div className="animate-spin rounded-full h-12 w-12 sm:h-16 sm:w-16 border-4 border-indigo-600 border-t-transparent mb-4"></div>
+            <p className="text-gray-600 text-sm sm:text-base">Loading amazing projects...</p>
           </div>
         ) : filteredTemplates.length === 0 ? (
-          <div className="text-center py-20 animate-fade-in">
-            <svg className="mx-auto h-24 w-24 text-gray-400 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <div className="text-center py-16 sm:py-20 px-4 animate-fade-in">
+            <svg className="mx-auto h-20 w-20 sm:h-24 sm:w-24 text-gray-400 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
-            <h3 className="text-xl font-semibold text-gray-900 mb-2">No projects found</h3>
-            <p className="text-gray-600 mb-8">Try adjusting your search or filters</p>
+            <h3 className="text-lg sm:text-xl font-semibold text-gray-900 mb-2">No projects found</h3>
+            <p className="text-sm sm:text-base text-gray-600 mb-6 sm:mb-8">Try adjusting your search or filters</p>
             <Link
               href="/register"
-              className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-violet-600 to-indigo-600 text-white rounded-lg hover:from-violet-700 hover:to-indigo-700 transition-all shadow-lg"
+              className="inline-flex items-center px-5 sm:px-6 py-2.5 sm:py-3 text-sm sm:text-base bg-gradient-to-r from-violet-600 to-indigo-600 text-white rounded-lg hover:from-violet-700 hover:to-indigo-700 transition-all shadow-lg"
             >
               Be the first to upload!
             </Link>
           </div>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 lg:gap-8 pb-16">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-4 sm:gap-6 lg:gap-8 pb-12 sm:pb-16">
             {filteredTemplates.map((template, index) => (
               <Link
                 key={template.id}
@@ -249,9 +249,12 @@ export default function TemplatesPage() {
                   {template.previewImage ? (
                     <Image
                       src={template.previewImage}
-                      alt={template.title}
+                      alt={`${template.title} preview - ${template.description}`}
                       fill
+                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, (max-width: 1536px) 33vw, 25vw"
                       className="object-cover group-hover:scale-105 transition-transform duration-300"
+                      loading={index < 4 ? "eager" : "lazy"}
+                      priority={index < 2}
                     />
                   ) : (
                     <div className="absolute inset-0 flex items-center justify-center">
@@ -365,10 +368,11 @@ export default function TemplatesPage() {
                       {template.user.image ? (
                         <Image
                           src={template.user.image}
-                          alt={template.user.name || 'User'}
+                          alt={`${template.user.name || 'User'}'s avatar`}
                           width={24}
                           height={24}
                           className="rounded-full"
+                          loading="lazy"
                         />
                       ) : (
                         <div className="w-6 h-6 bg-gradient-to-br from-violet-400 to-indigo-400 rounded-full flex items-center justify-center text-white text-xs font-semibold">
