@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 import { useParams } from 'next/navigation'
 import Navbar from '@/components/Navbar'
 import Link from 'next/link'
+import Image from 'next/image'
 
 interface Template {
   id: string
@@ -90,10 +91,11 @@ export default function TemplateDetailPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50">
+      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100">
         <Navbar />
-        <div className="flex justify-center items-center h-96">
-          <div className="text-gray-600">Loading...</div>
+        <div className="flex flex-col justify-center items-center h-96">
+          <div className="animate-spin rounded-full h-16 w-16 border-4 border-indigo-600 border-t-transparent mb-4"></div>
+          <p className="text-gray-600 text-sm">Loading template details...</p>
         </div>
       </div>
     )
@@ -101,19 +103,22 @@ export default function TemplateDetailPage() {
 
   if (!template) {
     return (
-      <div className="min-h-screen bg-gray-50">
+      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100">
         <Navbar />
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-          <div className="text-center">
-            <h1 className="text-2xl font-bold text-gray-900">
+          <div className="text-center animate-fade-in">
+            <svg className="mx-auto h-24 w-24 text-gray-400 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            <h1 className="text-2xl font-bold text-gray-900 mb-2">
               Template not found
             </h1>
-            <p className="mt-2 text-gray-600">
+            <p className="mt-2 text-gray-600 mb-6">
               The template you're looking for doesn't exist.
             </p>
             <Link
               href="/templates"
-              className="mt-4 inline-block text-indigo-600 hover:text-indigo-500"
+              className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-violet-600 to-indigo-600 text-white rounded-lg hover:from-violet-700 hover:to-indigo-700 transition-all shadow-lg"
             >
               ← Back to templates
             </Link>
@@ -125,45 +130,88 @@ export default function TemplateDetailPage() {
 
   const allImages = [template.previewImage, ...template.images]
 
+  // Structured Data for SEO
+  const structuredData = {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    name: template.title,
+    description: template.description,
+    image: template.previewImage,
+    category: template.category,
+    offers: {
+      "@type": "Offer",
+      price: template.isPaid ? Number(template.price).toFixed(2) : "0",
+      priceCurrency: "USD",
+      availability: "https://schema.org/InStock",
+    },
+    aggregateRating: {
+      "@type": "AggregateRating",
+      ratingValue: "5",
+      reviewCount: template.analytics?.totalViews || template.views,
+    },
+    brand: {
+      "@type": "Brand",
+      name: "MVP Marketplace",
+    },
+  };
+
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(structuredData),
+        }}
+      />
       <Navbar />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="mb-6">
+        <div className="mb-6 animate-fade-in">
           <Link
             href="/templates"
-            className="text-indigo-600 hover:text-indigo-500 font-medium"
+            className="inline-flex items-center text-indigo-600 hover:text-indigo-500 font-medium transition-colors"
           >
-            ← Back to projects
+            <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+            </svg>
+            Back to projects
           </Link>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          <div className="lg:col-span-2">
-            <div className="bg-white rounded-lg shadow overflow-hidden">
-              <img
-                src={selectedImage}
-                alt={template.title}
-                className="w-full h-96 object-cover"
-              />
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8">
+          <div className="lg:col-span-2 space-y-6">
+            <div className="bg-white rounded-2xl shadow-lg overflow-hidden animate-fade-in-up">
+              <div className="relative w-full h-64 sm:h-96 bg-gradient-to-br from-violet-100 to-indigo-100">
+                <Image
+                  src={selectedImage}
+                  alt={`${template.title} preview`}
+                  fill
+                  sizes="(max-width: 1024px) 100vw, 66vw"
+                  className="object-cover"
+                  priority
+                />
+              </div>
               {allImages.length > 1 && (
-                <div className="p-4 border-t border-gray-200">
-                  <div className="flex gap-2 overflow-x-auto">
+                <div className="p-4 border-t border-gray-100 bg-gray-50">
+                  <div className="flex gap-2 overflow-x-auto pb-2">
                     {allImages.map((image, index) => (
                       <button
                         key={index}
                         onClick={() => setSelectedImage(image)}
-                        className={`flex-shrink-0 w-20 h-20 rounded-md overflow-hidden border-2 ${
+                        className={`flex-shrink-0 w-20 h-20 rounded-lg overflow-hidden border-2 transition-all ${
                           selectedImage === image
-                            ? 'border-indigo-600'
-                            : 'border-gray-200'
+                            ? 'border-indigo-600 shadow-md'
+                            : 'border-gray-200 hover:border-indigo-300'
                         }`}
                       >
-                        <img
-                          src={image}
-                          alt={`Preview ${index + 1}`}
-                          className="w-full h-full object-cover"
-                        />
+                        <div className="relative w-full h-full">
+                          <Image
+                            src={image}
+                            alt={`${template.title} preview ${index + 1}`}
+                            fill
+                            sizes="80px"
+                            className="object-cover"
+                          />
+                        </div>
                       </button>
                     ))}
                   </div>
