@@ -362,33 +362,15 @@ export default function TemplateDetailPage() {
                         Download Source Code (.zip)
                       </a>
                     ) : (
-                      // Paid template - show price and contact info
-                      <div className="space-y-3">
-                        <div className="bg-indigo-50 border border-indigo-200 rounded-lg p-4">
-                          <div className="flex items-center justify-between">
-                            <span className="text-sm font-medium text-gray-700">
-                              Purchase Price
-                            </span>
-                            <span className="text-2xl font-bold text-indigo-600">
-                              ${Number(template.price).toFixed(2)} USD
-                            </span>
-                          </div>
-                        </div>
-                        <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
-                          <p className="text-sm text-gray-700 mb-3">
-                            To purchase this project, please contact the creator:
-                          </p>
-                          <div className="space-y-2">
-                            <a
-                              href={`mailto:${template.user.email}?subject=Purchase: ${template.title}&body=Hi, I'm interested in purchasing your project "${template.title}" for $${Number(template.price).toFixed(2)}.`}
-                              className="w-full inline-flex justify-center items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700"
-                            >
-                              <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                              </svg>
-                              Contact via Email
-                            </a>
-                          </div>
+                      // Paid template - show price only
+                      <div className="bg-indigo-50 border border-indigo-200 rounded-lg p-4">
+                        <div className="flex items-center justify-between">
+                          <span className="text-sm font-medium text-gray-700">
+                            Purchase Price
+                          </span>
+                          <span className="text-2xl font-bold text-indigo-600">
+                            ${Number(template.price).toFixed(2)} USD
+                          </span>
                         </div>
                       </div>
                     )}
