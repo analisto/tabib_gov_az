@@ -93,6 +93,7 @@ model Template {
   demoUrl      String?
   githubUrl    String?
   downloadUrl  String? // URL to downloadable zip file in R2 storage
+  repositoryUrl String? // User-provided repository URL (alternative to downloadUrl)
   techStack    String[] // Technologies used
 
   // Metadata

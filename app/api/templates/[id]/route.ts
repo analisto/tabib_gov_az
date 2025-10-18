@@ -96,6 +96,7 @@ export async function PUT(
         demoUrl: body.demoUrl,
         githubUrl: body.githubUrl,
         downloadUrl: body.downloadUrl,
+        repositoryUrl: body.repositoryUrl,
         previewImage: body.previewImage,
         images: body.images,
         price: body.price,
