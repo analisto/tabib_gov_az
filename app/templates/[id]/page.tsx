@@ -5,6 +5,7 @@ import { useParams } from 'next/navigation'
 import Navbar from '@/components/Navbar'
 import Link from 'next/link'
 import Image from 'next/image'
+import ShareButtons from '@/components/ShareButtons'
 
 interface Template {
   id: string
@@ -509,6 +510,15 @@ export default function TemplateDetailPage() {
                   </a>
                 )}
               </div>
+            </div>
+
+            {/* Share Buttons */}
+            <div className="mt-6">
+              <ShareButtons
+                url={typeof window !== 'undefined' ? window.location.href : ''}
+                title={template.title}
+                description={template.description}
+              />
             </div>
 
             <div className="bg-white rounded-lg shadow p-6 mt-6">
