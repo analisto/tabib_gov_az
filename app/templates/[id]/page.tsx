@@ -17,6 +17,7 @@ interface Template {
   demoUrl?: string
   githubUrl?: string
   downloadUrl?: string
+  repositoryUrl?: string
   techStack: string[]
   views: number
   downloads: number
@@ -335,32 +336,59 @@ export default function TemplateDetailPage() {
                   )}
                 </div>
 
-                {/* Download or Contact to Purchase */}
-                {template.downloadUrl && (
+                {/* Source Code Access */}
+                {(template.downloadUrl || template.repositoryUrl) && (
                   <>
                     {!template.isPaid || Number(template.price) === 0 ? (
-                      // Free template - show download button
-                      <a
-                        href={template.downloadUrl}
-                        download
-                        onClick={() => trackAnalytics('download')}
-                        className="w-full inline-flex justify-center items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 shadow-md"
-                      >
-                        <svg
-                          className="w-5 h-5 mr-2"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"
-                          />
-                        </svg>
-                        Download Source Code (.zip)
-                      </a>
+                      // Free template - show download/repository access
+                      <div className="space-y-2">
+                        {template.downloadUrl && (
+                          <a
+                            href={template.downloadUrl}
+                            download
+                            onClick={() => trackAnalytics('download')}
+                            className="w-full inline-flex justify-center items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 shadow-md"
+                          >
+                            <svg
+                              className="w-5 h-5 mr-2"
+                              fill="none"
+                              stroke="currentColor"
+                              viewBox="0 0 24 24"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth={2}
+                                d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"
+                              />
+                            </svg>
+                            Download Source Code (.zip)
+                          </a>
+                        )}
+                        {template.repositoryUrl && (
+                          <a
+                            href={template.repositoryUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="w-full inline-flex justify-center items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 shadow-sm"
+                          >
+                            <svg
+                              className="w-5 h-5 mr-2"
+                              fill="none"
+                              stroke="currentColor"
+                              viewBox="0 0 24 24"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth={2}
+                                d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+                              />
+                            </svg>
+                            Access Repository
+                          </a>
+                        )}
+                      </div>
                     ) : (
                       // Paid template - show price only
                       <div className="bg-indigo-50 border border-indigo-200 rounded-lg p-4">
