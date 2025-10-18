@@ -17,7 +17,6 @@ interface Template {
   demoUrl?: string
   githubUrl?: string
   downloadUrl?: string
-  repositoryUrl?: string
   techStack: string[]
   views: number
   downloads: number
@@ -141,7 +140,7 @@ export default function TemplateDetailPage() {
     category: template.category,
     offers: {
       "@type": "Offer",
-      price: template.isPaid ? Number(template.price).toFixed(2) : "0",
+      price: template.isPaid ? Number(template.price) : "0",
       priceCurrency: "USD",
       availability: "https://schema.org/InStock",
     },
@@ -234,7 +233,7 @@ export default function TemplateDetailPage() {
                     <svg className="w-6 h-6 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
-                    <span className="text-3xl font-bold text-emerald-700">${Number(template.price).toFixed(2)}</span>
+                    <span className="text-3xl font-bold text-emerald-700">${Number(template.price)}</span>
                   </div>
                 ) : (
                   <div className="inline-flex items-center gap-2 bg-blue-50 border-2 border-blue-300 rounded-xl px-5 py-2.5 shadow-md">
@@ -337,58 +336,31 @@ export default function TemplateDetailPage() {
                 </div>
 
                 {/* Source Code Access */}
-                {(template.downloadUrl || template.repositoryUrl) && (
+                {template.downloadUrl && (
                   <>
                     {!template.isPaid || Number(template.price) === 0 ? (
-                      // Free template - show download/repository access
-                      <div className="space-y-2">
-                        {template.downloadUrl && (
-                          <a
-                            href={template.downloadUrl}
-                            download
-                            onClick={() => trackAnalytics('download')}
-                            className="w-full inline-flex justify-center items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 shadow-md"
-                          >
-                            <svg
-                              className="w-5 h-5 mr-2"
-                              fill="none"
-                              stroke="currentColor"
-                              viewBox="0 0 24 24"
-                            >
-                              <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth={2}
-                                d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"
-                              />
-                            </svg>
-                            Download Source Code (.zip)
-                          </a>
-                        )}
-                        {template.repositoryUrl && (
-                          <a
-                            href={template.repositoryUrl}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="w-full inline-flex justify-center items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 shadow-sm"
-                          >
-                            <svg
-                              className="w-5 h-5 mr-2"
-                              fill="none"
-                              stroke="currentColor"
-                              viewBox="0 0 24 24"
-                            >
-                              <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth={2}
-                                d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
-                              />
-                            </svg>
-                            Access Repository
-                          </a>
-                        )}
-                      </div>
+                      // Free template - show download button
+                      <a
+                        href={template.downloadUrl}
+                        download
+                        onClick={() => trackAnalytics('download')}
+                        className="w-full inline-flex justify-center items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 shadow-md"
+                      >
+                        <svg
+                          className="w-5 h-5 mr-2"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"
+                          />
+                        </svg>
+                        Download Source Code
+                      </a>
                     ) : (
                       // Paid template - show price only
                       <div className="bg-indigo-50 border border-indigo-200 rounded-lg p-4">
@@ -397,7 +369,7 @@ export default function TemplateDetailPage() {
                             Purchase Price
                           </span>
                           <span className="text-2xl font-bold text-indigo-600">
-                            ${Number(template.price).toFixed(2)} USD
+                            ${Number(template.price)} USD
                           </span>
                         </div>
                       </div>
@@ -548,7 +520,7 @@ export default function TemplateDetailPage() {
                   <dt className="text-gray-500">Price</dt>
                   <dd className="text-gray-900 font-semibold">
                     {template.isPaid && Number(template.price) > 0
-                      ? `$${Number(template.price).toFixed(2)} USD`
+                      ? `$${Number(template.price)} USD`
                       : 'Free'}
                   </dd>
                 </div>

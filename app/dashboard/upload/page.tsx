@@ -19,7 +19,6 @@ export default function UploadTemplatePage() {
     tags: '',
     demoUrl: '',
     githubUrl: '',
-    repositoryUrl: '',
     techStack: '',
     price: '0',
     isPaid: false,
@@ -93,7 +92,6 @@ export default function UploadTemplatePage() {
         demoUrl: formData.demoUrl || undefined,
         githubUrl: formData.githubUrl || undefined,
         downloadUrl: downloadUrl,
-        repositoryUrl: formData.repositoryUrl || undefined,
         techStack: formData.techStack
           .split(',')
           .map((tech) => tech.trim())
@@ -210,13 +208,21 @@ export default function UploadTemplatePage() {
                 className="mt-1 block w-full px-4 py-3 bg-white border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all text-gray-900"
               >
                 <option value="">Select a category</option>
-                <option value="landing-page">Landing Page</option>
-                <option value="dashboard">Dashboard</option>
+                <option value="saas">SaaS Platform</option>
+                <option value="marketplace">Marketplace</option>
                 <option value="e-commerce">E-commerce</option>
-                <option value="blog">Blog</option>
+                <option value="social-media">Social Media</option>
+                <option value="dashboard">Dashboard / Analytics</option>
+                <option value="landing-page">Landing Page</option>
+                <option value="blog">Blog / CMS</option>
                 <option value="portfolio">Portfolio</option>
+                <option value="booking">Booking / Scheduling</option>
+                <option value="crm">CRM</option>
                 <option value="admin">Admin Panel</option>
-                <option value="components">Components</option>
+                <option value="api">API / Backend</option>
+                <option value="mobile-app">Mobile App</option>
+                <option value="ai-ml">AI / ML Application</option>
+                <option value="components">UI Components / Library</option>
                 <option value="other">Other</option>
               </select>
             </div>
@@ -333,8 +339,11 @@ export default function UploadTemplatePage() {
                 htmlFor="githubUrl"
                 className="block text-sm font-medium text-gray-700"
               >
-                GitHub URL (optional)
+                Repository / Code Link (optional)
               </label>
+              <p className="mt-1 text-sm text-gray-500">
+                Link to GitHub, GitLab, Google Drive, Dropbox, or any code hosting platform
+              </p>
               <input
                 type="url"
                 id="githubUrl"
@@ -342,84 +351,41 @@ export default function UploadTemplatePage() {
                 onChange={(e) =>
                   setFormData({ ...formData, githubUrl: e.target.value })
                 }
-                placeholder="https://github.com/username/repo"
-                className="mt-1 block w-full px-4 py-3 bg-white border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all text-gray-900"
+                placeholder="https://github.com/username/repo or https://drive.google.com/..."
+                className="mt-2 block w-full px-4 py-3 bg-white border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all text-gray-900"
               />
             </div>
 
-            {/* Repository/Source Code Section */}
-            <div className="border-t pt-6">
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                Source Code Access
-              </h3>
-              <p className="text-sm text-gray-500 mb-4">
-                Provide source code access by either uploading a ZIP file OR providing a link to your repository
+            <div>
+              <label
+                htmlFor="zipFile"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Source Code Package (optional)
+              </label>
+              <p className="mt-1 text-sm text-gray-500">
+                Upload a .zip file of your project's complete source code (max 50MB)
               </p>
-
-              <div className="space-y-4">
-                <div>
-                  <label
-                    htmlFor="repositoryUrl"
-                    className="block text-sm font-medium text-gray-700"
-                  >
-                    Repository URL (optional)
-                  </label>
-                  <p className="mt-1 text-sm text-gray-500">
-                    Link to GitHub, GitLab, Google Drive, Dropbox, etc.
-                  </p>
-                  <input
-                    type="url"
-                    id="repositoryUrl"
-                    value={formData.repositoryUrl}
-                    onChange={(e) =>
-                      setFormData({ ...formData, repositoryUrl: e.target.value })
-                    }
-                    placeholder="https://github.com/username/repo or https://drive.google.com/..."
-                    className="mt-2 block w-full px-4 py-3 bg-white border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all text-gray-900"
-                  />
+              <input
+                type="file"
+                id="zipFile"
+                accept=".zip"
+                onChange={(e) => {
+                  const file = e.target.files?.[0]
+                  if (file) {
+                    setZipFile(file)
+                  }
+                }}
+                className="mt-2 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100"
+              />
+              {zipFile && (
+                <div className="mt-2 text-sm text-gray-600 flex items-center gap-2">
+                  <svg className="w-4 h-4 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                  </svg>
+                  {zipFile.name} ({(zipFile.size / 1024 / 1024).toFixed(2)} MB)
                 </div>
-
-                <div className="relative">
-                  <div className="absolute inset-0 flex items-center" aria-hidden="true">
-                    <div className="w-full border-t border-gray-300"></div>
-                  </div>
-                  <div className="relative flex justify-center text-sm">
-                    <span className="px-2 bg-white text-gray-500">OR</span>
-                  </div>
-                </div>
-
-                <div>
-                  <label
-                    htmlFor="zipFile"
-                    className="block text-sm font-medium text-gray-700"
-                  >
-                    Upload ZIP File (optional)
-                  </label>
-                  <p className="mt-1 text-sm text-gray-500">
-                    Upload a .zip file of your project's complete source code (max 50MB)
-                  </p>
-                  <input
-                    type="file"
-                    id="zipFile"
-                    accept=".zip"
-                    onChange={(e) => {
-                      const file = e.target.files?.[0]
-                      if (file) {
-                        setZipFile(file)
-                      }
-                    }}
-                    className="mt-2 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100"
-                  />
-                  {zipFile && (
-                    <div className="mt-2 text-sm text-gray-600 flex items-center gap-2">
-                      <svg className="w-4 h-4 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                      </svg>
-                      {zipFile.name} ({(zipFile.size / 1024 / 1024).toFixed(2)} MB)
-                    </div>
-                  )}
-                </div>
-              </div>
+              )}
             </div>
 
             {/* Pricing Section */}
