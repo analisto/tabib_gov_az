@@ -94,6 +94,30 @@ export async function PUT(
     // Validate input
     const validatedData = updateUserSchema.parse(body)
 
+    // Clean up GitHub and Twitter - extract username if full URL provided
+    let cleanGithub = validatedData.github || null
+    if (cleanGithub) {
+      cleanGithub = cleanGithub.trim()
+      if (cleanGithub.includes('github.com/')) {
+        cleanGithub = cleanGithub.split('github.com/')[1]?.split('/')[0] || cleanGithub
+      }
+      if (cleanGithub.startsWith('@')) {
+        cleanGithub = cleanGithub.substring(1)
+      }
+    }
+
+    let cleanTwitter = validatedData.twitter || null
+    if (cleanTwitter) {
+      cleanTwitter = cleanTwitter.trim()
+      if (cleanTwitter.includes('twitter.com/') || cleanTwitter.includes('x.com/')) {
+        const parts = cleanTwitter.split('.com/')[1]
+        cleanTwitter = parts?.split('/')[0]?.split('?')[0] || cleanTwitter
+      }
+      if (cleanTwitter.startsWith('@')) {
+        cleanTwitter = cleanTwitter.substring(1)
+      }
+    }
+
     // Check if email is being changed and if it's already taken
     if (validatedData.email && validatedData.email !== session.user.email) {
       const existingUser = await prisma.user.findUnique({
@@ -117,8 +141,8 @@ export async function PUT(
         phone: validatedData.phone || null,
         bio: validatedData.bio || null,
         website: validatedData.website || null,
-        github: validatedData.github || null,
-        twitter: validatedData.twitter || null,
+        github: cleanGithub,
+        twitter: cleanTwitter,
       },
       select: {
         id: true,
