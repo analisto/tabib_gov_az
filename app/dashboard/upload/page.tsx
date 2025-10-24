@@ -127,9 +127,9 @@ export default function UploadTemplatePage() {
       <Navbar />
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900">Upload Your Project</h1>
+          <h1 className="text-3xl font-bold text-gray-900">Showcase Your Project</h1>
           <p className="mt-2 text-gray-600">
-            Share your full-stack web application or MVP with the community
+            Share your startup or MVP to connect with potential cofounders
           </p>
         </div>
 
@@ -342,90 +342,6 @@ export default function UploadTemplatePage() {
                 placeholder="https://github.com/username/repo or https://drive.google.com/..."
                 className="mt-2 block w-full px-4 py-3 bg-white border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all text-gray-900"
               />
-            </div>
-
-            <div>
-              <label
-                htmlFor="zipFile"
-                className="block text-sm font-medium text-gray-700"
-              >
-                Source Code Package (optional)
-              </label>
-              <p className="mt-1 text-sm text-gray-500">
-                Upload a .zip file of your project's complete source code (max 50MB)
-              </p>
-              <input
-                type="file"
-                id="zipFile"
-                accept=".zip"
-                onChange={(e) => {
-                  const file = e.target.files?.[0]
-                  if (file) {
-                    setZipFile(file)
-                  }
-                }}
-                className="mt-2 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100"
-              />
-              {zipFile && (
-                <div className="mt-2 text-sm text-gray-600 flex items-center gap-2">
-                  <svg className="w-4 h-4 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                  </svg>
-                  {zipFile.name} ({(zipFile.size / 1024 / 1024).toFixed(2)} MB)
-                </div>
-              )}
-            </div>
-
-            {/* Pricing Section */}
-            <div className="border-t pt-6">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">Pricing</h3>
-
-              <div className="space-y-4">
-                <div className="flex items-center gap-4">
-                  <label className="flex items-center cursor-pointer">
-                    <input
-                      type="radio"
-                      name="pricing"
-                      checked={!formData.isPaid}
-                      onChange={() => setFormData({ ...formData, isPaid: false, price: '0' })}
-                      className="w-4 h-4 text-indigo-600 focus:ring-indigo-500"
-                    />
-                    <span className="ml-2 text-sm font-medium text-gray-700">
-                      Free - Anyone can download
-                    </span>
-                  </label>
-                </div>
-
-                <div className="space-y-3">
-                  <label className="flex items-center cursor-pointer">
-                    <input
-                      type="radio"
-                      name="pricing"
-                      checked={formData.isPaid}
-                      onChange={() => setFormData({ ...formData, isPaid: true })}
-                      className="w-4 h-4 text-indigo-600 focus:ring-indigo-500"
-                    />
-                    <span className="ml-2 text-sm font-medium text-gray-700">
-                      Paid - One-time purchase
-                    </span>
-                  </label>
-
-                  {formData.isPaid && (
-                    <div className="ml-6 flex items-center gap-2">
-                      <input
-                        type="number"
-                        min="0.01"
-                        step="0.01"
-                        value={formData.price}
-                        onChange={(e) => setFormData({ ...formData, price: e.target.value })}
-                        placeholder="0.00"
-                        className="w-32 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-gray-900"
-                      />
-                      <span className="text-sm font-medium text-gray-700">USD</span>
-                    </div>
-                  )}
-                </div>
-              </div>
             </div>
 
             <div className="flex gap-4">

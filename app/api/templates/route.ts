@@ -13,10 +13,7 @@ const templateSchema = z.object({
   images: z.array(z.string().url()),
   demoUrl: z.string().url().optional().or(z.literal('')),
   githubUrl: z.string().url().optional().or(z.literal('')),
-  downloadUrl: z.string().url().optional().or(z.literal('')).or(z.undefined()),
   techStack: z.array(z.string()),
-  price: z.number().min(0, 'Price must be at least 0'),
-  isPaid: z.boolean(),
 })
 
 // GET - Get all templates
@@ -85,9 +82,6 @@ export async function POST(req: NextRequest) {
         ...validatedData,
         demoUrl: validatedData.demoUrl || null,
         githubUrl: validatedData.githubUrl || null,
-        downloadUrl: validatedData.downloadUrl || null,
-        price: validatedData.price,
-        isPaid: validatedData.isPaid,
         userId: session.user.id,
       },
       include: {

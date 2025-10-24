@@ -95,11 +95,8 @@ export async function PUT(
         techStack: body.techStack,
         demoUrl: body.demoUrl,
         githubUrl: body.githubUrl,
-        downloadUrl: body.downloadUrl,
         previewImage: body.previewImage,
         images: body.images,
-        price: body.price,
-        isPaid: body.isPaid,
       },
     })
 

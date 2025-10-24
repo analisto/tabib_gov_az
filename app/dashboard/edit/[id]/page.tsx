@@ -24,8 +24,6 @@ export default function EditTemplatePage() {
     demoUrl: '',
     githubUrl: '',
     techStack: '',
-    price: '0',
-    isPaid: false,
   })
 
   const [previewImage, setPreviewImage] = useState<File | null>(null)
@@ -33,8 +31,6 @@ export default function EditTemplatePage() {
   const [existingPreviewImage, setExistingPreviewImage] = useState('')
   const [additionalImages, setAdditionalImages] = useState<File[]>([])
   const [existingImages, setExistingImages] = useState<string[]>([])
-  const [zipFile, setZipFile] = useState<File | null>(null)
-  const [existingDownloadUrl, setExistingDownloadUrl] = useState('')
 
   useEffect(() => {
     if (status === 'unauthenticated') {
@@ -67,13 +63,10 @@ export default function EditTemplatePage() {
           demoUrl: template.demoUrl || '',
           githubUrl: template.githubUrl || '',
           techStack: template.techStack?.join(', ') || '',
-          price: template.price?.toString() || '0',
-          isPaid: template.isPaid || false,
         })
 
         setExistingPreviewImage(template.previewImage || '')
         setExistingImages(template.images || [])
-        setExistingDownloadUrl(template.downloadUrl || '')
       } catch (err) {
         setError('Failed to load template')
       } finally {
@@ -111,7 +104,6 @@ export default function EditTemplatePage() {
     try {
       let finalPreviewImage = existingPreviewImage
       let finalAdditionalImages = existingImages
-      let finalDownloadUrl = existingDownloadUrl
 
       // Upload new preview image if selected
       if (previewImage) {
@@ -128,12 +120,6 @@ export default function EditTemplatePage() {
         finalAdditionalImages = [...existingImages, ...uploadedUrls]
       }
 
-      // Upload zip file if provided
-      if (zipFile) {
-        setUploadingImages(true)
-        finalDownloadUrl = await handleImageUpload(zipFile)
-      }
-
       setUploadingImages(false)
 
       // Update template
@@ -146,13 +132,10 @@ export default function EditTemplatePage() {
         images: finalAdditionalImages,
         demoUrl: formData.demoUrl || undefined,
         githubUrl: formData.githubUrl || undefined,
-        downloadUrl: finalDownloadUrl || undefined,
         techStack: formData.techStack
           .split(',')
           .map((tech) => tech.trim())
           .filter(Boolean),
-        price: parseFloat(formData.price),
-        isPaid: formData.isPaid,
       }
 
       const res = await fetch(`/api/templates/${templateId}`, {
@@ -441,101 +424,6 @@ export default function EditTemplatePage() {
                 placeholder="https://github.com/username/repo or https://drive.google.com/..."
                 className="mt-2 block w-full px-4 py-3 bg-white border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all text-gray-900"
               />
-            </div>
-
-            <div>
-              <label
-                htmlFor="zipFile"
-                className="block text-sm font-medium text-gray-700"
-              >
-                Source Code Package {existingDownloadUrl && '(optional - leave blank to keep current)'}
-              </label>
-              {existingDownloadUrl && !zipFile && (
-                <div className="mt-2 text-sm text-gray-600 flex items-center gap-2">
-                  <svg className="w-4 h-4 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                  </svg>
-                  ZIP file already uploaded
-                </div>
-              )}
-              <p className="mt-1 text-sm text-gray-500">
-                Upload a .zip file of your project's complete source code (max 50MB)
-              </p>
-              <input
-                type="file"
-                id="zipFile"
-                accept=".zip"
-                onChange={(e) => {
-                  const file = e.target.files?.[0]
-                  if (file) {
-                    setZipFile(file)
-                  }
-                }}
-                className="mt-2 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100"
-              />
-              {zipFile && (
-                <div className="mt-2 text-sm text-gray-600 flex items-center gap-2">
-                  <svg className="w-4 h-4 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                  </svg>
-                  {zipFile.name} ({(zipFile.size / 1024 / 1024).toFixed(2)} MB)
-                </div>
-              )}
-            </div>
-
-            {/* Pricing Section */}
-            <div className="border-t pt-6">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">Pricing</h3>
-
-              <div className="space-y-4">
-                <div className="flex items-center gap-4">
-                  <label className="flex items-center cursor-pointer">
-                    <input
-                      type="radio"
-                      name="pricing"
-                      checked={!formData.isPaid}
-                      onChange={() => setFormData({ ...formData, isPaid: false, price: '0' })}
-                      className="w-4 h-4 text-indigo-600 focus:ring-indigo-500"
-                    />
-                    <span className="ml-2 text-sm font-medium text-gray-700">
-                      Free - Anyone can download
-                    </span>
-                  </label>
-                </div>
-
-                <div className="space-y-3">
-                  <label className="flex items-center cursor-pointer">
-                    <input
-                      type="radio"
-                      name="pricing"
-                      checked={formData.isPaid}
-                      onChange={() => setFormData({ ...formData, isPaid: true })}
-                      className="w-4 h-4 text-indigo-600 focus:ring-indigo-500"
-                    />
-                    <span className="ml-2 text-sm font-medium text-gray-700">
-                      Paid - Contact for purchase
-                    </span>
-                  </label>
-
-                  {formData.isPaid && (
-                    <div className="ml-6 flex items-center gap-2">
-                      <input
-                        type="number"
-                        min="0.01"
-                        step="0.01"
-                        value={formData.price}
-                        onChange={(e) => setFormData({ ...formData, price: e.target.value })}
-                        placeholder="0.00"
-                        className="w-32 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-gray-900"
-                      />
-                      <span className="text-sm font-medium text-gray-700">USD</span>
-                      <p className="text-xs text-gray-500 ml-2">
-                        Buyers will contact you to purchase
-                      </p>
-                    </div>
-                  )}
-                </div>
-              </div>
             </div>
 
             <div className="flex gap-4">
