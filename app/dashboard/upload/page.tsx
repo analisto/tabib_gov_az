@@ -20,14 +20,11 @@ export default function UploadTemplatePage() {
     demoUrl: '',
     githubUrl: '',
     techStack: '',
-    price: '0',
-    isPaid: false,
   })
 
   const [previewImage, setPreviewImage] = useState<File | null>(null)
   const [previewImageUrl, setPreviewImageUrl] = useState('')
   const [additionalImages, setAdditionalImages] = useState<File[]>([])
-  const [zipFile, setZipFile] = useState<File | null>(null)
 
   useEffect(() => {
     if (status === 'unauthenticated') {
@@ -73,12 +70,6 @@ export default function UploadTemplatePage() {
         additionalImages.map((file) => handleImageUpload(file))
       )
 
-      // Upload zip file if provided
-      let downloadUrl: string | undefined = undefined
-      if (zipFile) {
-        downloadUrl = await handleImageUpload(zipFile)
-      }
-
       setUploadingImages(false)
 
       // Create template
@@ -91,13 +82,10 @@ export default function UploadTemplatePage() {
         images: additionalImageUrls,
         demoUrl: formData.demoUrl || undefined,
         githubUrl: formData.githubUrl || undefined,
-        downloadUrl: downloadUrl,
         techStack: formData.techStack
           .split(',')
           .map((tech) => tech.trim())
           .filter(Boolean),
-        price: parseFloat(formData.price),
-        isPaid: formData.isPaid,
       }
 
       const res = await fetch('/api/templates', {
