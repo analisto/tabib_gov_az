@@ -13,13 +13,11 @@ interface Template {
   category: string
   previewImage: string
   views: number
-  downloads: number
   createdAt: string
   analytics?: {
     totalViews: number
     emailReveals: number
     phoneReveals: number
-    totalDownloads: number
   }
 }
 
@@ -120,7 +118,7 @@ export default function DashboardPage() {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 mb-8">
+        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 mb-8">
           <div className="bg-white rounded-lg shadow p-6">
             <div className="flex items-center">
               <div className="flex-shrink-0">
@@ -181,36 +179,6 @@ export default function DashboardPage() {
                   </dt>
                   <dd className="text-3xl font-semibold text-gray-900">
                     {templates.reduce((acc, t) => acc + t.views, 0)}
-                  </dd>
-                </dl>
-              </div>
-            </div>
-          </div>
-
-          <div className="bg-white rounded-lg shadow p-6">
-            <div className="flex items-center">
-              <div className="flex-shrink-0">
-                <svg
-                  className="h-8 w-8 text-indigo-600"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"
-                  />
-                </svg>
-              </div>
-              <div className="ml-5 w-0 flex-1">
-                <dl>
-                  <dt className="text-sm font-medium text-gray-500 truncate">
-                    Total Downloads
-                  </dt>
-                  <dd className="text-3xl font-semibold text-gray-900">
-                    {templates.reduce((acc, t) => acc + t.downloads, 0)}
                   </dd>
                 </dl>
               </div>
@@ -289,7 +257,7 @@ export default function DashboardPage() {
 
                       {/* Analytics Section */}
                       <div className="mb-4 p-3 bg-gray-50 rounded-lg">
-                        <div className="grid grid-cols-2 gap-2 text-xs">
+                        <div className="grid grid-cols-3 gap-2 text-xs">
                           <div className="flex items-center gap-1">
                             <svg className="w-3 h-3 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
@@ -311,13 +279,6 @@ export default function DashboardPage() {
                             </svg>
                             <span className="text-gray-700 font-medium">{template.analytics?.phoneReveals || 0}</span>
                             <span className="text-gray-500">phones</span>
-                          </div>
-                          <div className="flex items-center gap-1">
-                            <svg className="w-3 h-3 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
-                            </svg>
-                            <span className="text-gray-700 font-medium">{template.analytics?.totalDownloads || template.downloads}</span>
-                            <span className="text-gray-500">downloads</span>
                           </div>
                         </div>
                       </div>

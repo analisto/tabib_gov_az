@@ -8,7 +8,7 @@ export async function POST(
   try {
     const { id } = await params
     const body = await req.json()
-    const { action } = body // 'view', 'email_reveal', 'phone_reveal', 'download'
+    const { action } = body // 'view', 'email_reveal', 'phone_reveal'
 
     // Check if template exists
     const template = await prisma.template.findUnique({
@@ -69,22 +69,6 @@ export async function POST(
           where: { templateId: id },
           data: {
             phoneReveals: { increment: 1 },
-          },
-        })
-        break
-
-      case 'download':
-        await prisma.templateAnalytics.update({
-          where: { templateId: id },
-          data: {
-            totalDownloads: { increment: 1 },
-          },
-        })
-        // Also update the template's download count
-        await prisma.template.update({
-          where: { id },
-          data: {
-            downloads: { increment: 1 },
           },
         })
         break
