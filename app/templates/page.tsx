@@ -14,7 +14,6 @@ interface Template {
   previewImage: string
   techStack: string[]
   views: number
-  downloads: number
   featured: boolean
   price: number
   isPaid: boolean
@@ -28,7 +27,6 @@ interface Template {
     uniqueViews: number
     emailReveals: number
     phoneReveals: number
-    totalDownloads: number
   }
   createdAt: string
 }
@@ -88,8 +86,6 @@ export default function TemplatesPage() {
         return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
       } else if (sortBy === 'popular') {
         return b.views - a.views
-      } else if (sortBy === 'downloads') {
-        return b.downloads - a.downloads
       }
       return 0
     })
@@ -202,7 +198,6 @@ export default function TemplatesPage() {
               >
                 <option value="recent">Most Recent</option>
                 <option value="popular">Most Popular</option>
-                <option value="downloads">Most Downloaded</option>
               </select>
             </div>
           </div>
@@ -325,7 +320,7 @@ export default function TemplatesPage() {
 
                   {/* Analytics Section */}
                   <div className="mb-4 p-3 bg-gradient-to-br from-gray-50 to-indigo-50/30 rounded-lg border border-indigo-100/50">
-                    <div className="grid grid-cols-2 gap-3 text-xs">
+                    <div className="grid grid-cols-3 gap-3 text-xs">
                       <div className="flex items-center gap-1.5">
                         <svg className="w-4 h-4 text-indigo-600 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
@@ -333,13 +328,6 @@ export default function TemplatesPage() {
                         </svg>
                         <span className="text-gray-700 font-semibold">{template.analytics?.totalViews || template.views}</span>
                         <span className="text-gray-600">views</span>
-                      </div>
-                      <div className="flex items-center gap-1.5">
-                        <svg className="w-4 h-4 text-indigo-600 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
-                        </svg>
-                        <span className="text-gray-700 font-semibold">{template.analytics?.totalDownloads || template.downloads}</span>
-                        <span className="text-gray-600">downloads</span>
                       </div>
                       <div className="flex items-center gap-1.5">
                         <svg className="w-4 h-4 text-indigo-600 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">

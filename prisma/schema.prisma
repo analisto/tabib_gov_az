@@ -93,6 +93,10 @@ model Template {
   githubUrl    String? // Repository URL (GitHub, GitLab, Google Drive, etc.) or code preview link
   techStack    String[] // Technologies used
 
+  // Pricing
+  price        Decimal? @db.Decimal(10, 2) // Price in USD (nullable for free templates)
+  isPaid       Boolean  @default(false)
+
   // Metadata
   views        Int      @default(0)
   featured     Boolean  @default(false)
