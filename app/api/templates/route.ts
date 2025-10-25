@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
+import { Prisma } from '@prisma/client'
 import { z } from 'zod'
 
 const templateSchema = z.object({
@@ -14,7 +15,7 @@ const templateSchema = z.object({
   demoUrl: z.string().url().optional().or(z.literal('')),
   githubUrl: z.string().url().optional().or(z.literal('')),
   techStack: z.array(z.string()),
-  price: z.number().positive().optional().nullable(),
+  price: z.union([z.string(), z.number()]).transform(val => val === null ? null : String(val)).optional().nullable(),
   isPaid: z.boolean().optional(),
 })
 
@@ -84,7 +85,7 @@ export async function POST(req: NextRequest) {
         ...validatedData,
         demoUrl: validatedData.demoUrl || null,
         githubUrl: validatedData.githubUrl || null,
-        price: validatedData.price ?? null,
+        price: validatedData.price ? new Prisma.Decimal(validatedData.price) : null,
         isPaid: validatedData.isPaid ?? false,
         userId: session.user.id,
       },
