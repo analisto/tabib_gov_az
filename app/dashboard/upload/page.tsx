@@ -289,11 +289,11 @@ export default function UploadTemplatePage() {
                       <span className="text-gray-500 sm:text-sm">$</span>
                     </div>
                     <input
-                      type="number"
+                      type="text"
+                      inputMode="decimal"
                       id="price"
                       required={formData.isPaid}
-                      min="0"
-                      step="0.01"
+                      pattern="^\d+(\.\d{1,2})?$"
                       value={formData.price}
                       onChange={(e) =>
                         setFormData({ ...formData, price: e.target.value })
