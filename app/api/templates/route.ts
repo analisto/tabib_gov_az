@@ -17,6 +17,7 @@ const templateSchema = z.object({
   techStack: z.array(z.string()),
   price: z.string().optional().nullable(),
   isPaid: z.boolean().optional(),
+  hasSupport: z.boolean().optional(),
 })
 
 // GET - Get all templates
@@ -87,6 +88,7 @@ export async function POST(req: NextRequest) {
         githubUrl: validatedData.githubUrl || null,
         price: validatedData.price ? new Prisma.Decimal(validatedData.price) : null,
         isPaid: validatedData.isPaid ?? false,
+        hasSupport: validatedData.hasSupport ?? false,
         userId: session.user.id,
       },
       include: {

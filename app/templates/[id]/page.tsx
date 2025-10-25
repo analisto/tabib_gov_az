@@ -21,6 +21,7 @@ interface Template {
   views: number
   price?: number
   isPaid?: boolean
+  hasSupport?: boolean
   user: {
     id: string
     name: string
@@ -474,6 +475,26 @@ export default function TemplateDetailPage() {
                         </svg>
                         <span className="text-2xl font-bold text-blue-700">FREE</span>
                       </div>
+                    )}
+                  </dd>
+                </div>
+                <div>
+                  <dt className="text-gray-500">Support</dt>
+                  <dd className="text-gray-900">
+                    {template.hasSupport ? (
+                      <span className="inline-flex items-center gap-1.5 text-green-700 font-medium">
+                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        Available
+                      </span>
+                    ) : (
+                      <span className="inline-flex items-center gap-1.5 text-gray-500">
+                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                        Not available
+                      </span>
                     )}
                   </dd>
                 </div>

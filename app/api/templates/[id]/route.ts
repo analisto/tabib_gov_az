@@ -100,6 +100,7 @@ export async function PUT(
         images: body.images,
         price: body.price ? new Prisma.Decimal(body.price) : null,
         isPaid: body.isPaid ?? false,
+        hasSupport: body.hasSupport ?? false,
       },
     })
 
