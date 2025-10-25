@@ -97,6 +97,8 @@ export async function PUT(
         githubUrl: body.githubUrl,
         previewImage: body.previewImage,
         images: body.images,
+        price: body.price ?? null,
+        isPaid: body.isPaid ?? false,
       },
     })
 

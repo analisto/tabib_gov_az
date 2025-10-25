@@ -20,6 +20,8 @@ export default function UploadTemplatePage() {
     demoUrl: '',
     githubUrl: '',
     techStack: '',
+    price: '',
+    isPaid: false,
   })
 
   const [previewImage, setPreviewImage] = useState<File | null>(null)
@@ -86,6 +88,8 @@ export default function UploadTemplatePage() {
           .split(',')
           .map((tech) => tech.trim())
           .filter(Boolean),
+        price: formData.isPaid && formData.price ? parseFloat(formData.price) : null,
+        isPaid: formData.isPaid,
       }
 
       const res = await fetch('/api/templates', {
@@ -252,6 +256,57 @@ export default function UploadTemplatePage() {
                 placeholder="Next.js, TypeScript, Tailwind CSS"
                 className="mt-1 block w-full px-4 py-3 bg-white border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all text-gray-900"
               />
+            </div>
+
+            <div>
+              <div className="flex items-center">
+                <input
+                  type="checkbox"
+                  id="isPaid"
+                  checked={formData.isPaid}
+                  onChange={(e) =>
+                    setFormData({ ...formData, isPaid: e.target.checked, price: e.target.checked ? formData.price : '' })
+                  }
+                  className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
+                />
+                <label
+                  htmlFor="isPaid"
+                  className="ml-2 block text-sm font-medium text-gray-700"
+                >
+                  This is a paid template
+                </label>
+              </div>
+              {formData.isPaid && (
+                <div className="mt-3">
+                  <label
+                    htmlFor="price"
+                    className="block text-sm font-medium text-gray-700"
+                  >
+                    Price (USD) *
+                  </label>
+                  <div className="mt-1 relative rounded-md shadow-sm">
+                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                      <span className="text-gray-500 sm:text-sm">$</span>
+                    </div>
+                    <input
+                      type="number"
+                      id="price"
+                      required={formData.isPaid}
+                      min="0"
+                      step="0.01"
+                      value={formData.price}
+                      onChange={(e) =>
+                        setFormData({ ...formData, price: e.target.value })
+                      }
+                      placeholder="49.99"
+                      className="block w-full pl-7 pr-4 py-3 bg-white border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all text-gray-900"
+                    />
+                  </div>
+                  <p className="mt-1 text-sm text-gray-500">
+                    Set a price for your template. Leave blank or uncheck for free templates.
+                  </p>
+                </div>
+              )}
             </div>
 
             <div>
