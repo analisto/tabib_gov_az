@@ -255,6 +255,17 @@ export default function TemplatesPage() {
                       </svg>
                     </div>
                   )}
+                  {/* Top left badge for support */}
+                  {template.hasSupport && (
+                    <div className="absolute top-3 left-3">
+                      <div className="bg-gradient-to-r from-green-500 to-emerald-500 text-white text-xs font-bold px-3 py-1.5 rounded-full shadow-lg flex items-center gap-1.5">
+                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z" />
+                        </svg>
+                        Support Included
+                      </div>
+                    </div>
+                  )}
                   <div className="absolute top-3 right-3 flex flex-col gap-2 items-end">
                     {template.featured && (
                       <div className="bg-gradient-to-r from-amber-400 to-orange-500 text-white text-xs font-bold px-3 py-1 rounded-full shadow-lg">
@@ -346,18 +357,9 @@ export default function TemplatesPage() {
                       )}
                       <span className="text-sm text-gray-600 truncate">{template.user.name || 'Anonymous'}</span>
                     </div>
-                    <div className="flex items-center gap-2">
-                      {template.hasSupport && (
-                        <span className="inline-flex items-center px-2 py-1 rounded-md text-xs font-medium bg-green-50 text-green-700" title="Support available">
-                          <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                          </svg>
-                        </span>
-                      )}
-                      <span className="inline-flex items-center px-2 py-1 rounded-md text-xs font-medium bg-indigo-50 text-indigo-700">
-                        {template.category}
-                      </span>
-                    </div>
+                    <span className="inline-flex items-center px-2 py-1 rounded-md text-xs font-medium bg-indigo-50 text-indigo-700">
+                      {template.category}
+                    </span>
                   </div>
                 </div>
               </Link>
