@@ -26,6 +26,7 @@ export default function EditTemplatePage() {
     techStack: '',
     price: '',
     isPaid: false,
+    hasSupport: false,
   })
 
   const [previewImage, setPreviewImage] = useState<File | null>(null)
@@ -67,6 +68,7 @@ export default function EditTemplatePage() {
           techStack: template.techStack?.join(', ') || '',
           price: template.price ? template.price.toString() : '',
           isPaid: template.isPaid || false,
+          hasSupport: template.hasSupport || false,
         })
 
         setExistingPreviewImage(template.previewImage || '')
@@ -142,6 +144,7 @@ export default function EditTemplatePage() {
           .filter(Boolean),
         price: formData.isPaid && formData.price ? formData.price : null,
         isPaid: formData.isPaid,
+        hasSupport: formData.hasSupport,
       }
 
       const res = await fetch(`/api/templates/${templateId}`, {
@@ -372,6 +375,29 @@ export default function EditTemplatePage() {
                   </p>
                 </div>
               )}
+            </div>
+
+            <div>
+              <div className="flex items-center">
+                <input
+                  type="checkbox"
+                  id="hasSupport"
+                  checked={formData.hasSupport}
+                  onChange={(e) =>
+                    setFormData({ ...formData, hasSupport: e.target.checked })
+                  }
+                  className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
+                />
+                <label
+                  htmlFor="hasSupport"
+                  className="ml-2 block text-sm font-medium text-gray-700"
+                >
+                  I offer support for this template
+                </label>
+              </div>
+              <p className="mt-1 text-sm text-gray-500">
+                Check this if you're available to help buyers with questions or issues related to this template.
+              </p>
             </div>
 
             <div>

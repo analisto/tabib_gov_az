@@ -17,6 +17,7 @@ interface Template {
   featured: boolean
   price: number
   isPaid: boolean
+  hasSupport?: boolean
   user: {
     id: string
     name: string | null
@@ -345,9 +346,18 @@ export default function TemplatesPage() {
                       )}
                       <span className="text-sm text-gray-600 truncate">{template.user.name || 'Anonymous'}</span>
                     </div>
-                    <span className="inline-flex items-center px-2 py-1 rounded-md text-xs font-medium bg-indigo-50 text-indigo-700">
-                      {template.category}
-                    </span>
+                    <div className="flex items-center gap-2">
+                      {template.hasSupport && (
+                        <span className="inline-flex items-center px-2 py-1 rounded-md text-xs font-medium bg-green-50 text-green-700" title="Support available">
+                          <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                          </svg>
+                        </span>
+                      )}
+                      <span className="inline-flex items-center px-2 py-1 rounded-md text-xs font-medium bg-indigo-50 text-indigo-700">
+                        {template.category}
+                      </span>
+                    </div>
                   </div>
                 </div>
               </Link>

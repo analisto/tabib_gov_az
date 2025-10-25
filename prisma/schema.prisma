@@ -96,6 +96,7 @@ model Template {
   // Pricing
   price        Decimal? @db.Decimal(10, 2) // Price in USD (nullable for free templates)
   isPaid       Boolean  @default(false)
+  hasSupport   Boolean  @default(false) // Whether the creator offers support for this template
 
   // Metadata
   views        Int      @default(0)
