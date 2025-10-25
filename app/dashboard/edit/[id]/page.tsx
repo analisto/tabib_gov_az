@@ -140,7 +140,7 @@ export default function EditTemplatePage() {
           .split(',')
           .map((tech) => tech.trim())
           .filter(Boolean),
-        price: formData.isPaid && formData.price ? parseFloat(formData.price) : null,
+        price: formData.isPaid && formData.price ? formData.price : null,
         isPaid: formData.isPaid,
       }
 

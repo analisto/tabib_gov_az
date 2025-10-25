@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
+import { Prisma } from '@prisma/client'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
 import { deleteFromR2 } from '@/lib/r2'
@@ -97,7 +98,7 @@ export async function PUT(
         githubUrl: body.githubUrl,
         previewImage: body.previewImage,
         images: body.images,
-        price: body.price ?? null,
+        price: body.price ? new Prisma.Decimal(body.price) : null,
         isPaid: body.isPaid ?? false,
       },
     })
