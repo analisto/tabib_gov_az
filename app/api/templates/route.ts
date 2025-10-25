@@ -15,7 +15,7 @@ const templateSchema = z.object({
   demoUrl: z.string().url().optional().or(z.literal('')),
   githubUrl: z.string().url().optional().or(z.literal('')),
   techStack: z.array(z.string()),
-  price: z.union([z.string(), z.number()]).transform(val => val === null ? null : String(val)).optional().nullable(),
+  price: z.string().optional().nullable(),
   isPaid: z.boolean().optional(),
 })
 
