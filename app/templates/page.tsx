@@ -278,25 +278,6 @@ export default function TemplatesPage() {
                     {template.title}
                   </h3>
 
-                  {/* Price Display */}
-                  <div className="mb-3">
-                    {template.isPaid && Number(template.price) > 0 ? (
-                      <div className="inline-flex items-center gap-2 bg-emerald-50 border-2 border-emerald-200 rounded-lg px-3 py-1.5">
-                        <svg className="w-4 h-4 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                        </svg>
-                        <span className="text-xl font-bold text-emerald-700">${Number(template.price).toFixed(2)}</span>
-                      </div>
-                    ) : (
-                      <div className="inline-flex items-center gap-2 bg-blue-50 border-2 border-blue-200 rounded-lg px-3 py-1.5">
-                        <svg className="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H12zm-7 4h14M5 12a2 2 0 110-4h14a2 2 0 110 4M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7" />
-                        </svg>
-                        <span className="text-xl font-bold text-blue-700">FREE</span>
-                      </div>
-                    )}
-                  </div>
-
                   <p className="text-gray-600 text-sm mb-4 line-clamp-2 leading-relaxed">
                     {template.description}
                   </p>
