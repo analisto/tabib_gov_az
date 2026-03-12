@@ -40,9 +40,9 @@ export default function Home() {
   ]
 
   const stats = [
-    { label: 'Templates', value: '500+' },
-    { label: 'Developers', value: '10K+' },
-    { label: 'Downloads', value: '50K+' }
+    { label: 'Projects Listed', value: '16+' },
+    { label: 'Developers', value: 'Growing' },
+    { label: 'Contact Reveals', value: 'Daily' }
   ]
 
   return (
